@@ -1,0 +1,15 @@
+{
+  "tasks": {
+    "serve": "MODE=dev deno run --allow-env --allow-net --allow-read main.ts",
+    "deploy": "deployctl deploy",
+    "generate-cert": "openssl req -x509 -newkey rsa:2048 -keyout cert/key.pem -out cert/cert.pem -days 365 -nodes"
+  },
+  "deploy": {
+    "project": "3b54b88b-26d5-4fff-9a51-3bf2518077cf",
+    "exclude": [
+      "**/node_modules"
+    ],
+    "include": [],
+    "entrypoint": "main.ts"
+  }
+}
