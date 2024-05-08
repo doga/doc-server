@@ -169,7 +169,7 @@ docPage = async (path: string):Promise<Line[]> => {
             const 
             staticMarker = method.isStatic ? 'static ' : '',
             paramNames: string = (method.functionDef.params as Param[]).map(p => p.name).join(', '),
-            methodHeader: string = `${staticMarker}${method.name}(${paramNames})`;
+            methodHeader: string = method.kind === 'getter' ? `${staticMarker}${method.name}` : `${staticMarker}${method.name}(${paramNames})`;
 
             lines.push(new LineHeading(methodHeader, 3)); lines.push(_);
             const jsdocLines = getJsdocLines(method.jsDoc);
