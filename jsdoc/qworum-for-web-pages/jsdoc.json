@@ -1,0 +1,1887 @@
+[
+  {
+    "kind": "class",
+    "name": "Json",
+    "location": {
+      "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+      "line": 55,
+      "col": 0,
+      "byteIndex": 1350
+    },
+    "declarationKind": "export",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [],
+      "indexSignatures": [],
+      "methods": [
+        {
+          "jsDoc": {
+            "doc": "Builder for [Json data values](https://qworum.net/en/specification/v1/#json). \n",
+            "tags": [
+              {
+                "kind": "unsupported",
+                "value": "@static"
+              },
+              {
+                "kind": "param",
+                "name": "value",
+                "doc": "A value that can be serialized to JSON."
+              },
+              {
+                "kind": "unsupported",
+                "value": "@throws {Error}"
+              },
+              {
+                "kind": "return",
+                "type": "Json"
+              },
+              {
+                "kind": "example",
+                "doc": "const json = Json.build(2022);"
+              },
+              {
+                "kind": "see",
+                "doc": "{@link https://qworum.net/en/specification/v1/#json|Qworum specification}"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": true,
+          "name": "build",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "value",
+                "optional": false,
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 72,
+            "col": 2,
+            "byteIndex": 1803
+          }
+        },
+        {
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "value",
+          "kind": "getter",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 82,
+            "col": 2,
+            "byteIndex": 2069
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Serialises the object to string for informational purposes.",
+            "tags": [
+              {
+                "kind": "return",
+                "type": "string"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "toString",
+          "kind": "method",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 89,
+            "col": 2,
+            "byteIndex": 2215
+          }
+        }
+      ],
+      "extends": "GenericData",
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  },
+  {
+    "kind": "class",
+    "name": "SemanticData",
+    "location": {
+      "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+      "line": 189,
+      "col": 0,
+      "byteIndex": 5464
+    },
+    "declarationKind": "export",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [],
+      "indexSignatures": [],
+      "methods": [
+        {
+          "jsDoc": {
+            "doc": "Builder for [semantic data values](https://qworum.net/en/specification/v1/#semantic). \n",
+            "tags": [
+              {
+                "kind": "unsupported",
+                "value": "@static"
+              },
+              {
+                "kind": "param",
+                "name": "value",
+                "type": "string",
+                "doc": "The semantic data value."
+              },
+              {
+                "kind": "param",
+                "name": "type",
+                "type": "(string | undefined)",
+                "doc": "The type of the semantic data value. One of 'turtle', 'trig', 'n-triples', 'n-quads'. Default is 'turtle'."
+              },
+              {
+                "kind": "unsupported",
+                "value": "@throws {Error}"
+              },
+              {
+                "kind": "return",
+                "type": "SemanticData"
+              },
+              {
+                "kind": "see",
+                "doc": "{@link https://qworum.net/en/specification/v1/#semantic|Qworum specification}"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": true,
+          "name": "build",
+          "kind": "method",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 205,
+            "col": 2,
+            "byteIndex": 6040
+          }
+        },
+        {
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "value",
+          "kind": "getter",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 215,
+            "col": 2,
+            "byteIndex": 6240
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Async RDF dataset reader.",
+            "tags": [
+              {
+                "kind": "param",
+                "name": "text",
+                "type": "string",
+                "doc": "Text in one of these RDF formats: Turtle, TriG, N-Triples, N-Quads"
+              },
+              {
+                "kind": "param",
+                "name": "baseIRI",
+                "type": "(URL|undefined)",
+                "doc": "The URL of the RDF document"
+              },
+              {
+                "kind": "return",
+                "type": "Promise.<boolean>"
+              },
+              {
+                "kind": "unsupported",
+                "value": "@async"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "readFromText",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "text",
+                "optional": false,
+                "tsType": null
+              },
+              {
+                "kind": "identifier",
+                "name": "baseIRI",
+                "optional": false,
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": true,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 231,
+            "col": 2,
+            "byteIndex": 6598
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Async RDF dataset reader.",
+            "tags": [
+              {
+                "kind": "param",
+                "name": "text",
+                "type": "string",
+                "doc": "Text in one of these RDF formats: Turtle, TriG, N-Triples, N-Quads"
+              },
+              {
+                "kind": "param",
+                "name": "baseIRI",
+                "type": "(URL|undefined)",
+                "doc": "The URL of the RDF document"
+              },
+              {
+                "kind": "return",
+                "type": "Promise.<boolean>"
+              },
+              {
+                "kind": "unsupported",
+                "value": "@async"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "readFromUrl",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "url",
+                "optional": false,
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": true,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 284,
+            "col": 2,
+            "byteIndex": 8395
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "RDF dataset serialiser.",
+            "tags": [
+              {
+                "kind": "param",
+                "name": "type",
+                "type": "string",
+                "doc": "One of: turtle, trig, n-triples, n-quads"
+              },
+              {
+                "kind": "return",
+                "type": "string"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "toRawString",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "type",
+                "optional": false,
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 302,
+            "col": 2,
+            "byteIndex": 8823
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Serialises the object to string for informational purposes.",
+            "tags": [
+              {
+                "kind": "return",
+                "type": "string"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "toString",
+          "kind": "method",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 338,
+            "col": 2,
+            "byteIndex": 9743
+          }
+        }
+      ],
+      "extends": "GenericData",
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  },
+  {
+    "kind": "class",
+    "name": "Return",
+    "location": {
+      "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+      "line": 566,
+      "col": 0,
+      "byteIndex": 16337
+    },
+    "declarationKind": "export",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [],
+      "indexSignatures": [],
+      "methods": [
+        {
+          "jsDoc": {
+            "doc": "Builder for [Return instructions](https://qworum.net/en/specification/v1/#return). \n",
+            "tags": [
+              {
+                "kind": "unsupported",
+                "value": "@static"
+              },
+              {
+                "kind": "param",
+                "name": "statement",
+                "type": "(DataValue | Instruction)",
+                "doc": "The instruction or data value to evaluate."
+              },
+              {
+                "kind": "unsupported",
+                "value": "@throws {Error}"
+              },
+              {
+                "kind": "return",
+                "type": "Return"
+              },
+              {
+                "kind": "example",
+                "doc": "const return1 = Return.build(Json.build(2022));"
+              },
+              {
+                "kind": "see",
+                "doc": "{@link https://qworum.net/en/specification/v1/#return|Qworum specification}"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": true,
+          "name": "build",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "statement",
+                "optional": false,
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 583,
+            "col": 2,
+            "byteIndex": 16858
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Serialises the object to string for informational purposes.",
+            "tags": [
+              {
+                "kind": "return",
+                "type": "string"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "toString",
+          "kind": "method",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 596,
+            "col": 2,
+            "byteIndex": 17183
+          }
+        }
+      ],
+      "extends": "Instruction",
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  },
+  {
+    "kind": "class",
+    "name": "Sequence",
+    "location": {
+      "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+      "line": 615,
+      "col": 0,
+      "byteIndex": 17618
+    },
+    "declarationKind": "export",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [],
+      "indexSignatures": [],
+      "methods": [
+        {
+          "jsDoc": {
+            "doc": "Builder for [Sequence instructions](https://qworum.net/en/specification/v1/#sequence). \n",
+            "tags": [
+              {
+                "kind": "unsupported",
+                "value": "@static"
+              },
+              {
+                "kind": "param",
+                "name": "statements",
+                "type": "(DataValue | Instruction | Array.<(DataValue | Instruction)>)",
+                "doc": "Statements."
+              },
+              {
+                "kind": "unsupported",
+                "value": "@throws {Error}"
+              },
+              {
+                "kind": "return",
+                "type": "Sequence"
+              },
+              {
+                "kind": "example",
+                "doc": "const sequence = Sequence.build(Json.build(2022));"
+              },
+              {
+                "kind": "see",
+                "doc": "{@link https://qworum.net/en/specification/v1/#sequence|Qworum specification}"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": true,
+          "name": "build",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "rest",
+                "arg": {
+                  "kind": "identifier",
+                  "name": "statements",
+                  "optional": false,
+                  "tsType": null
+                },
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 632,
+            "col": 2,
+            "byteIndex": 18162
+          }
+        },
+        {
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "statements",
+          "kind": "getter",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 650,
+            "col": 2,
+            "byteIndex": 18675
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Serialises the object to string for informational purposes.",
+            "tags": [
+              {
+                "kind": "return",
+                "type": "string"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "toString",
+          "kind": "method",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 657,
+            "col": 2,
+            "byteIndex": 18831
+          }
+        }
+      ],
+      "extends": "Instruction",
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  },
+  {
+    "kind": "class",
+    "name": "Data",
+    "location": {
+      "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+      "line": 677,
+      "col": 0,
+      "byteIndex": 19389
+    },
+    "declarationKind": "export",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [],
+      "indexSignatures": [],
+      "methods": [
+        {
+          "jsDoc": {
+            "doc": "Builder for [Data instructions](https://qworum.net/en/specification/v1/#data). \n",
+            "tags": [
+              {
+                "kind": "unsupported",
+                "value": "@static"
+              },
+              {
+                "kind": "param",
+                "name": "path",
+                "type": "(string | string[])",
+                "doc": "The path of the data container."
+              },
+              {
+                "kind": "param",
+                "name": "statement",
+                "type": "(DataValue | Instruction | undefined)",
+                "doc": "An instruction or data value."
+              },
+              {
+                "kind": "unsupported",
+                "value": "@throws {Error}"
+              },
+              {
+                "kind": "return",
+                "type": "Data"
+              },
+              {
+                "kind": "example",
+                "doc": "const data1 = Data.build('data1', Json.build(2022)); // Writing"
+              },
+              {
+                "kind": "example",
+                "doc": "const data2 = Data.build('data1'); // Reading"
+              },
+              {
+                "kind": "see",
+                "doc": "{@link https://qworum.net/en/specification/v1/#data|Qworum specification}"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": true,
+          "name": "build",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "path",
+                "optional": false,
+                "tsType": null
+              },
+              {
+                "kind": "identifier",
+                "name": "statement",
+                "optional": false,
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 699,
+            "col": 2,
+            "byteIndex": 20087
+          }
+        },
+        {
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "path",
+          "kind": "getter",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 717,
+            "col": 2,
+            "byteIndex": 20644
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Serialises the object to string for informational purposes.",
+            "tags": [
+              {
+                "kind": "return",
+                "type": "string"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "toString",
+          "kind": "method",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 724,
+            "col": 2,
+            "byteIndex": 20788
+          }
+        }
+      ],
+      "extends": "Instruction",
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  },
+  {
+    "kind": "class",
+    "name": "Try",
+    "location": {
+      "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+      "line": 749,
+      "col": 0,
+      "byteIndex": 21490
+    },
+    "declarationKind": "export",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [],
+      "indexSignatures": [],
+      "methods": [
+        {
+          "jsDoc": {
+            "doc": "Builder function for [Try instructions](https://qworum.net/en/specification/v1/#try).\n",
+            "tags": [
+              {
+                "kind": "unsupported",
+                "value": "@static"
+              },
+              {
+                "kind": "param",
+                "name": "statement",
+                "doc": "A statement (instruction or data value) or a non-empty array of statements."
+              },
+              {
+                "kind": "param",
+                "name": "catchClauses",
+                "doc": "One catch clause or an array of catch clauses."
+              },
+              {
+                "kind": "unsupported",
+                "value": "@throws {Error}"
+              },
+              {
+                "kind": "return",
+                "type": "Try"
+              },
+              {
+                "kind": "example",
+                "doc": "const try1 = Try.build(\n  Call.build('@', 'checkout/'),\n  [\n    {catch: ['the cart is empty'], do: Json({})}\n  ]\n);"
+              },
+              {
+                "kind": "see",
+                "doc": "{@link https://qworum.net/en/specification/v1/#try|Qworum specification}"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": true,
+          "name": "build",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "statement",
+                "optional": false,
+                "tsType": null
+              },
+              {
+                "kind": "identifier",
+                "name": "catchClauses",
+                "optional": false,
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 774,
+            "col": 2,
+            "byteIndex": 22207
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Serialises the object to string for informational purposes.",
+            "tags": [
+              {
+                "kind": "return",
+                "type": "string"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "toString",
+          "kind": "method",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 834,
+            "col": 2,
+            "byteIndex": 24269
+          }
+        }
+      ],
+      "extends": "Instruction",
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  },
+  {
+    "kind": "class",
+    "name": "Goto",
+    "location": {
+      "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+      "line": 877,
+      "col": 0,
+      "byteIndex": 25784
+    },
+    "declarationKind": "export",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [],
+      "indexSignatures": [],
+      "methods": [
+        {
+          "jsDoc": {
+            "doc": "Builder for [Goto instructions](https://qworum.net/en/specification/v1/#goto). \n",
+            "tags": [
+              {
+                "kind": "unsupported",
+                "value": "@static"
+              },
+              {
+                "kind": "param",
+                "name": "href",
+                "type": "(string | null | undefined)",
+                "doc": "The URL of the new call phase. Can be a relative or absolute URL."
+              },
+              {
+                "kind": "unsupported",
+                "value": "@throws {Error}"
+              },
+              {
+                "kind": "return",
+                "type": "Goto"
+              },
+              {
+                "kind": "example",
+                "doc": "const goto = Goto.build('home/');"
+              },
+              {
+                "kind": "see",
+                "doc": "{@link https://qworum.net/en/specification/v1/#goto|Qworum specification}"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": true,
+          "name": "build",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "href",
+                "optional": false,
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 896,
+            "col": 2,
+            "byteIndex": 26328
+          }
+        },
+        {
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "href",
+          "kind": "getter",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 912,
+            "col": 2,
+            "byteIndex": 26768
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Serialises the object to string for informational purposes.",
+            "tags": [
+              {
+                "kind": "return",
+                "type": "string"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "toString",
+          "kind": "method",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 927,
+            "col": 2,
+            "byteIndex": 27197
+          }
+        }
+      ],
+      "extends": "Instruction",
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  },
+  {
+    "kind": "class",
+    "name": "Call",
+    "location": {
+      "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+      "line": 968,
+      "col": 0,
+      "byteIndex": 28388
+    },
+    "declarationKind": "export",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [],
+      "indexSignatures": [],
+      "methods": [
+        {
+          "jsDoc": {
+            "doc": "Builder for [Call instructions](https://qworum.net/en/specification/v1/#call). \n",
+            "tags": [
+              {
+                "kind": "unsupported",
+                "value": "@static"
+              },
+              {
+                "kind": "param",
+                "name": "object",
+                "type": "(string[] | string | null | undefined)",
+                "doc": "The path of the Qworum object to call."
+              },
+              {
+                "kind": "param",
+                "name": "href",
+                "type": "(string | null | undefined)",
+                "doc": "The URL of the end-point to call. Can be a relative or absolute URL."
+              },
+              {
+                "kind": "param",
+                "name": "parameters",
+                "type": "(object | object[] | null | undefined)",
+                "doc": "Named data value arguments."
+              },
+              {
+                "kind": "param",
+                "name": "objectParameters",
+                "type": "(object | object[] | null | undefined)",
+                "doc": "Named Qworum object arguments."
+              },
+              {
+                "kind": "unsupported",
+                "value": "@throws {Error}"
+              },
+              {
+                "kind": "return",
+                "type": "Call"
+              },
+              {
+                "kind": "example",
+                "doc": "const call1 = Call.build('@', 'home/');"
+              },
+              {
+                "kind": "example",
+                "doc": "const call2 = Call.build(\n  '@', 'home/',\n  {name: 'current year', value: Json.build(2022)}\n);"
+              },
+              {
+                "kind": "example",
+                "doc": "const call3 = Call.build(\n  ['@'], 'home/',\n  [{name: 'current year', value: Json.build(2022)}],\n  [{name: 'object', object: ['@', 'a Qworum object']}]\n);"
+              },
+              {
+                "kind": "see",
+                "doc": "{@link https://qworum.net/en/specification/v1/#call|Qworum specification}"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": true,
+          "name": "build",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "object",
+                "optional": false,
+                "tsType": null
+              },
+              {
+                "kind": "identifier",
+                "name": "href",
+                "optional": false,
+                "tsType": null
+              },
+              {
+                "kind": "identifier",
+                "name": "parameters",
+                "optional": false,
+                "tsType": null
+              },
+              {
+                "kind": "identifier",
+                "name": "objectParameters",
+                "optional": false,
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 1005,
+            "col": 2,
+            "byteIndex": 29644
+          }
+        },
+        {
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "object",
+          "kind": "getter",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 1041,
+            "col": 2,
+            "byteIndex": 30876
+          }
+        },
+        {
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "href",
+          "kind": "getter",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 1044,
+            "col": 2,
+            "byteIndex": 30924
+          }
+        },
+        {
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "objectParameters",
+          "kind": "getter",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 1047,
+            "col": 2,
+            "byteIndex": 30968
+          }
+        },
+        {
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "parameters",
+          "kind": "getter",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 1050,
+            "col": 2,
+            "byteIndex": 31036
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Serialises the object to string for informational purposes.",
+            "tags": [
+              {
+                "kind": "return",
+                "type": "string"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "toString",
+          "kind": "method",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 1069,
+            "col": 2,
+            "byteIndex": 31674
+          }
+        }
+      ],
+      "extends": "Instruction",
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  },
+  {
+    "kind": "class",
+    "name": "Script",
+    "location": {
+      "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+      "line": 1137,
+      "col": 0,
+      "byteIndex": 33719
+    },
+    "declarationKind": "export",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [],
+      "indexSignatures": [],
+      "methods": [
+        {
+          "jsDoc": {
+            "doc": "Builder for [Qworum scripts](https://qworum.net/en/specification/v1/#script). \n",
+            "tags": [
+              {
+                "kind": "unsupported",
+                "value": "@static"
+              },
+              {
+                "kind": "param",
+                "name": "instruction",
+                "type": "Instruction",
+                "doc": "The root instruction to execute."
+              },
+              {
+                "kind": "return",
+                "type": "Script"
+              },
+              {
+                "kind": "example",
+                "doc": "const script =\nScript.build(\n  Sequence.build(\n    Call.build([\"@\", \"shopping cart\"], \"https://shopping-cart.example/view/\"),\n    Goto.build(\"/home/\")\n  )\n);"
+              },
+              {
+                "kind": "see",
+                "doc": "{@link https://qworum.net/en/specification/v1/#script|Qworum specification}"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": true,
+          "name": "build",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "instruction",
+                "optional": false,
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 1159,
+            "col": 2,
+            "byteIndex": 34333
+          }
+        },
+        {
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "instruction",
+          "kind": "getter",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 1167,
+            "col": 2,
+            "byteIndex": 34594
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Serialises the object to string for informational purposes.",
+            "tags": [
+              {
+                "kind": "return",
+                "type": "string"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "toString",
+          "kind": "method",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 1174,
+            "col": 2,
+            "byteIndex": 34752
+          }
+        }
+      ],
+      "extends": null,
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  },
+  {
+    "kind": "class",
+    "name": "Fault",
+    "location": {
+      "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+      "line": 498,
+      "col": 0,
+      "byteIndex": 14481
+    },
+    "declarationKind": "export",
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [],
+      "indexSignatures": [],
+      "methods": [
+        {
+          "jsDoc": {
+            "doc": "Builder for [Fault instructions](https://qworum.net/en/specification/v1/#fault). Suitable for service-specific faults only.\n",
+            "tags": [
+              {
+                "kind": "unsupported",
+                "value": "@static"
+              },
+              {
+                "kind": "param",
+                "name": "type",
+                "type": "(string | undefined)",
+                "doc": "The type of the raised fault."
+              },
+              {
+                "kind": "unsupported",
+                "value": "@throws {TypeError}"
+              },
+              {
+                "kind": "return",
+                "type": "Fault"
+              },
+              {
+                "kind": "example",
+                "doc": "const fault = Fault.build('payment cancelled');"
+              },
+              {
+                "kind": "see",
+                "doc": "{@link https://qworum.net/en/specification/v1/#fault|Qworum specification}"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": true,
+          "name": "build",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "type",
+                "optional": false,
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 517,
+            "col": 2,
+            "byteIndex": 15077
+          }
+        },
+        {
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "type",
+          "kind": "getter",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 535,
+            "col": 2,
+            "byteIndex": 15612
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Serialises the object to string for informational purposes.",
+            "tags": [
+              {
+                "kind": "return",
+                "type": "string"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": false,
+          "name": "toString",
+          "kind": "method",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": false,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum-script.mjs",
+            "line": 542,
+            "col": 2,
+            "byteIndex": 15756
+          }
+        }
+      ],
+      "extends": "Instruction",
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  },
+  {
+    "kind": "class",
+    "name": "Qworum",
+    "location": {
+      "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum.mjs",
+      "line": 54,
+      "col": 0,
+      "byteIndex": 1431
+    },
+    "declarationKind": "export",
+    "jsDoc": {
+      "doc": "Web pages can use the Qworum capabilities of web browsers through this JavaScript class.\n\nThese are the main methods that web pages use:\n\n- `eval()` evaluates a Qworum script.\n- `setData()` sets the value of a data container.\n- `getData()` reads the value of a data container.\n\nOther methods:\n\n- `checkAvailability()` verifies that Qworum is available on the user's web browser.\n\nAll these methods are asynchronous.\n",
+      "tags": [
+        {
+          "kind": "example",
+          "doc": "Checking the browser's Qworum availability status.\n\ntry{\n  await Qworum.checkAvailability();\n}catch(error){\n  console.error('Qworum browser extension not installed or not enabled.');\n}\n"
+        },
+        {
+          "kind": "example",
+          "doc": "Fault raised.\n\nawait Qworum.eval(\n  Script.build(Fault.build('payment cancelled'))\n);\n"
+        },
+        {
+          "kind": "example",
+          "doc": "Storing data in the current Qworum method call.\n\nawait Qworum.setData('year', Qworum.Json(2024));\n"
+        },
+        {
+          "kind": "example",
+          "doc": "Reading data stored in the current Qworum method call.\n\nconst result = await Qworum.getData(['year']);\nconsole.info(JSON.stringify(result.value));"
+        }
+      ]
+    },
+    "classDef": {
+      "isAbstract": false,
+      "constructors": [],
+      "properties": [],
+      "indexSignatures": [],
+      "methods": [
+        {
+          "jsDoc": {
+            "doc": "Checks that:\n\n- the Qworum browser extension is installed and running, and\n- the website's [origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin) is part of Qworum's Service Web.",
+            "tags": [
+              {
+                "kind": "unsupported",
+                "value": "@static"
+              },
+              {
+                "kind": "unsupported",
+                "value": "@async"
+              },
+              {
+                "kind": "return",
+                "type": "Promise.<null>",
+                "doc": "Can throw an Error."
+              },
+              {
+                "kind": "example",
+                "doc": "try{\n  await Qworum.checkAvailability();\n}catch(error){\n  console.error('Qworum browser extension not installed or not enabled.');\n}"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": true,
+          "name": "checkAvailability",
+          "kind": "method",
+          "functionDef": {
+            "params": [],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": true,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum.mjs",
+            "line": 71,
+            "col": 2,
+            "byteIndex": 1925
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Evaluates a Qworum script.\n\nThe outcome is one of:\n- Redirection to a new URL (the current Qworum session continues).\n- Closing of the browser tab after displaying an alert window (the current Qworum session has terminated).\n",
+            "tags": [
+              {
+                "kind": "unsupported",
+                "value": "@static"
+              },
+              {
+                "kind": "unsupported",
+                "value": "@async"
+              },
+              {
+                "kind": "param",
+                "name": "script",
+                "type": "Script"
+              },
+              {
+                "kind": "return",
+                "type": "Promise.<void>",
+                "doc": "Can throw a TypeError or Error."
+              },
+              {
+                "kind": "example",
+                "doc": "const\nScript = Qworum.Script,\nGoto   = Qworum.Goto;\n\nawait Qworum.eval(\n  Script(\n    Goto('next-phase/')\n  )\n);"
+              },
+              {
+                "kind": "see",
+                "doc": "[Qworum specification](https://qworum.net/en/specification/v1/#script)"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": true,
+          "name": "eval",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "script",
+                "optional": false,
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": true,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum.mjs",
+            "line": 107,
+            "col": 2,
+            "byteIndex": 2940
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Sets the value contained in a data container.",
+            "tags": [
+              {
+                "kind": "unsupported",
+                "value": "@static"
+              },
+              {
+                "kind": "unsupported",
+                "value": "@async"
+              },
+              {
+                "kind": "param",
+                "name": "path",
+                "type": "(string[] | string)",
+                "doc": "- The path of the data container."
+              },
+              {
+                "kind": "param",
+                "name": "value",
+                "type": "(Json | SemanticData)"
+              },
+              {
+                "kind": "return",
+                "type": "Promise.<null>",
+                "doc": "Can throw a TypeError or Error."
+              },
+              {
+                "kind": "example",
+                "doc": "try{\n  await Qworum.setData('year', Qworum.Json(2022));\n  console.info('The write operation was successful.');\n}catch(error){\n  console.error('The write operation was not successful.');\n}"
+              },
+              {
+                "kind": "see",
+                "doc": "[Qworum specification](https://qworum.net/en/specification/v1/#data)"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": true,
+          "name": "setData",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "path",
+                "optional": false,
+                "tsType": null
+              },
+              {
+                "kind": "identifier",
+                "name": "value",
+                "optional": false,
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": true,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum.mjs",
+            "line": 168,
+            "col": 2,
+            "byteIndex": 4862
+          }
+        },
+        {
+          "jsDoc": {
+            "doc": "Reads a value contained in a data container.",
+            "tags": [
+              {
+                "kind": "unsupported",
+                "value": "@static"
+              },
+              {
+                "kind": "unsupported",
+                "value": "@async"
+              },
+              {
+                "kind": "param",
+                "name": "path",
+                "type": "(string[] | string)",
+                "doc": "- The path of the data container."
+              },
+              {
+                "kind": "return",
+                "type": "Promise.<(Json | SemanticData | null)>",
+                "doc": "- The value in the data container, or null if the value is not set. Can throw a TypeError or Error."
+              },
+              {
+                "kind": "example",
+                "doc": "try{\n  const result = await Qworum.getData(['a data']);\n  if (result instanceof Json){\n    console.info(`The read operation was successful, the result is: ${JSON.stringify(result.value)}`);\n  } else {\n    console.info(`The data has not been set yet. Did you call Qworum.getData(['a data']) beforehand ?`);\n  }\n}catch(error){\n  console.error('An unexpected error has occurred during the read.');\n}"
+              },
+              {
+                "kind": "see",
+                "doc": "[Qworum specification](https://qworum.net/en/specification/v1/#data)"
+              }
+            ]
+          },
+          "accessibility": null,
+          "optional": false,
+          "isAbstract": false,
+          "isStatic": true,
+          "name": "getData",
+          "kind": "method",
+          "functionDef": {
+            "params": [
+              {
+                "kind": "identifier",
+                "name": "path",
+                "optional": false,
+                "tsType": null
+              }
+            ],
+            "returnType": null,
+            "hasBody": true,
+            "isAsync": true,
+            "isGenerator": false,
+            "typeParams": []
+          },
+          "location": {
+            "filename": "file:///Users/da/home/work/ArmangilSoftware2/code/qworum/qworum-for-web-pages/lib/qworum.mjs",
+            "line": 220,
+            "col": 2,
+            "byteIndex": 6840
+          }
+        }
+      ],
+      "extends": null,
+      "implements": [],
+      "typeParams": [],
+      "superTypeParams": []
+    }
+  }
+]
