@@ -38,7 +38,7 @@ Additional requirements:
 JSDOC_DIR='./path/to/jsdoc' \
 TLS_CERT='./path/to/cert.pem' \
 TLS_CERT_KEY='./path/to/key.pem' \
-deno run --allow-env --allow-net --allow-read ./main.ts
+deno task server
 ```
 
 ∎
