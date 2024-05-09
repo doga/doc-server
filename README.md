@@ -1,6 +1,6 @@
 # doc-server
 
-A [Gemini](https://geminiprotocol.net/) server for serving JSdoc running on the [Deno](https://deno.com/) JavaScript runtime.
+A [Gemini](https://geminiprotocol.net/) server for serving JSdoc on the [Deno](https://deno.com/) JavaScript runtime.
 
 ## Usage
 
@@ -38,8 +38,7 @@ Additional requirements:
 JSDOC_DIR='./path/to/jsdoc' \
 TLS_CERT='./path/to/cert.pem' \
 TLS_CERT_KEY='./path/to/key.pem' \
-deno run --allow-env --allow-net --allow-read \
-https://esm.sh/gh/doga/doc-jserver@1.0.0/main.ts
+deno run --allow-env --allow-net --allow-read ./main.ts
 ```
 
 ∎
