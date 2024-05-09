@@ -1,7 +1,9 @@
 # doc-server
 
-A Gemini server for serving JSdoc.
+A Gemini server for serving JSdoc. Written for Deno.
 
-TODO: Building JSdoc capability on top of Gemini.
+TODO: Release this as a JSDoc server ES6 library.
 
 Note: Deno Deploy is only for web servers, does not work for Gemini.
+
+∎

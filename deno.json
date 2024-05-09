@@ -1,8 +1,12 @@
 {
   "tasks": {
-    "serve": "MODE=dev deno run --allow-env --allow-net --allow-read main.ts",
-    "generate-cert": "openssl req -x509 -newkey rsa:2048 -keyout cert/key.pem -out cert/cert.pem -days 365 -nodes",
-    "jsdoc-iri": "mkdir -p ./jsdoc/IRI; deno doc --json --name='IRI' ../IRI/mod.mjs > ./jsdoc/IRI/jsdoc.json",
-    "jsdoc-qworum-for-web-pages": "mkdir -p ./jsdoc/qworum-for-web-pages; deno doc --json --name='Qworum library for web pages' ../qworum/qworum-for-web-pages/mod.mjs > ./jsdoc/qworum-for-web-pages/jsdoc.json"
+    "build-docker-image": "docker build -t dogaar/qworum-gemini-jsdoc .",
+
+    "local-server": "cd ./app/code; deno run --allow-env --allow-net --allow-read main.ts",
+    "internet-server": "cd ./app/code; DOMAIN=qworum-jdoc.ddns.net deno run --allow-env --allow-net --allow-read main.ts",
+    "generate-cert": "openssl req -x509 -newkey rsa:2048 -keyout certs/key.pem -out certs/cert.pem -days 365 -nodes",
+
+    "jsdoc-iri": "mkdir -p ./app/jsdoc/IRI; deno doc --json --name='IRI' ../IRI/mod.mjs > ./app/jsdoc/IRI/jsdoc.json",
+    "jsdoc-qworum-for-web-pages": "mkdir -p ./app/jsdoc/qworum-for-web-pages; deno doc --json --name='Qworum library for web pages' ../qworum/qworum-for-web-pages/mod.mjs > ./app/jsdoc/qworum-for-web-pages/jsdoc.json"
   }
 }

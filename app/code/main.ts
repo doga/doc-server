@@ -17,15 +17,20 @@ import {
 } from "./lib/jsdoc-types.mts";
 
 const
-rootDir = 'jsdoc',
+rootDir = '../jsdoc', // WARNING has current dir as context, which is not necessarily main.ts's directory.
 _       = new LineText(''),
-isProd  = !['dev', 'development', 'test'].includes(Deno.env.get('MODE') || ''),
-domain  = isProd ? 'doc.gemini.qworum.net' : 'localhost',
+// isProd  = !['dev', 'development', 'test'].includes(Deno.env.get('MODE') || ''),
+// domain  = isProd ? 'jsdoc.gemini.qworum.net' : 'localhost',
+domain  = Deno.env.get('DOMAIN') || 'localhost',
 
 app    = new Application({
-  keyFile : `./cert/${domain}/key.pem`,
-  certFile: `./cert/${domain}/cert.pem`,
-  hostname: domain,
+  // WARNING has current dir as context, which is not necessarily main.ts's directory.
+  //keyFile : `../cert/key.pem`, 
+  //certFile: `../cert/cert.pem`,
+  keyFile : `../certs/${domain}/key.pem`,
+  certFile: `../certs/${domain}/cert.pem`,
+  hostname: '0.0.0.0', // reachable from all network interfaces, see https://stackoverflow.com/questions/19798254/cant-assign-requested-address-python-multicasting
+  // hostname: domain,
   // port    : 1965,
 }),
 
@@ -199,7 +204,7 @@ mainRoute = new Route('/', async (ctx) => {
 
     ctx.response.body =
     new Gemtext(
-      new LineHeading('JSdoc Server', 1), _,
+      new LineHeading('Qworum JSdoc Server', 1), _,
       ...lines,
     );
   } catch (error) {
@@ -252,4 +257,9 @@ app.use(async (ctx) => {
   );
 });
 
-await app.start();
+while(true)
+try {
+  await app.start();
+} catch (error) {
+  console.error(`Restarting the server after this error: ${error}`);
+}
