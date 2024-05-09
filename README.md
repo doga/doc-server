@@ -1,6 +1,16 @@
 # doc-server
 
-A [Gemini](https://geminiprotocol.net/) server for serving JSdoc on the [Deno](https://deno.com/) JavaScript runtime.
+A Gemini server for serving JSdoc on the [Deno](https://deno.com/) JavaScript runtime.
+
+## What is Gemini?
+
+[Gemini](https://geminiprotocol.net/) is a new Web-like content platform with its own protocol and its own Markdown-like content format. It is especially suitable for browsing content from the terminal. Recommended Gemini client: [amfora](https://github.com/makew0rld/amfora?tab=readme-ov-file#amfora).
+
+## How to install
+
+```shell
+git clone https://github.com/doga/doc-server.git
+```
 
 ## Usage
 
@@ -24,13 +34,13 @@ deno doc --json --name=MODULENAME ./path/to/mod.mjs > ./path/to/jsdoc/MODULENAME
 
 Note that the `jsdoc` directory has a strict structure. It can contain:
 
-* a `jsdoc.json` file at the root, and
-* any number of module directories, each containing a `jsdoc.json` file.
+- a `jsdoc.json` file at the root, and
+- any number of module directories, each containing a `jsdoc.json` file.
 
 Additional requirements:
 
-* The `jsdoc` directory can be zero or one directory deep.
-* The name `jsdoc.json` is mandatory for the output of `deno doc`.
+- The `jsdoc` directory can be zero or one directory deep.
+- The name `jsdoc.json` is mandatory for the output of `deno doc`.
 
 ### 3. Run the JSDoc server
 
