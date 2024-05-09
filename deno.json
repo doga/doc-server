@@ -1,12 +1,6 @@
 {
   "tasks": {
-    "build-docker-image": "docker build -t dogaar/qworum-gemini-jsdoc .",
-
-    "local-server": "cd ./app/code; deno run --allow-env --allow-net --allow-read main.ts",
-    "internet-server": "cd ./app/code; DOMAIN=qworum-jdoc.ddns.net deno run --allow-env --allow-net --allow-read main.ts",
-    "generate-cert": "openssl req -x509 -newkey rsa:2048 -keyout certs/key.pem -out certs/cert.pem -days 365 -nodes",
-
-    "jsdoc-iri": "mkdir -p ./app/jsdoc/IRI; deno doc --json --name='IRI' ../IRI/mod.mjs > ./app/jsdoc/IRI/jsdoc.json",
-    "jsdoc-qworum-for-web-pages": "mkdir -p ./app/jsdoc/qworum-for-web-pages; deno doc --json --name='Qworum library for web pages' ../qworum/qworum-for-web-pages/mod.mjs > ./app/jsdoc/qworum-for-web-pages/jsdoc.json"
+    "generate-tls-certificate": "openssl req -x509 -newkey rsa:2048 -keyout $TLS_CERT_KEY -out $TLS_CERT -days 365 -nodes",
+    "server": "deno run --allow-env --allow-net --allow-read ./main.ts"
   }
 }

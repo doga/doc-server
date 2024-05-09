@@ -1,44 +1,32 @@
 import { 
   Application,
-
-  Gemtext, Line, LineText, LineLink, LineHeading,
-  // LineQuote, LineListItem,
-
-  // Redirect,
-  handleRedirects, handleRoutes, Route,
+  Gemtext, Line, LineText, LineLink, LineHeading, // LineQuote, LineListItem,
+  handleRedirects, handleRoutes, Route, // Redirect,
 } from './deps.mts';
 
 import {
-  JsDoc, Tag, SeeTag, ExampleTag, ReturnTag, ParamTag, UnsupportedTag,
-  Param,
-  Constructor, FunctionDef, MethodDef,
-  ClassDef,
-  Definition, ClassDefinition,
+  JsDoc, Param, Tag, // SeeTag, ExampleTag, ReturnTag, ParamTag, UnsupportedTag,
+  Constructor, MethodDef, // FunctionDef, ClassDef,
+  Definition, // ClassDefinition,
 } from "./lib/jsdoc-types.mts";
 
-const
-rootDir = '../jsdoc', // WARNING has current dir as context, which is not necessarily main.ts's directory.
-_       = new LineText(''),
-// isProd  = !['dev', 'development', 'test'].includes(Deno.env.get('MODE') || ''),
-// domain  = isProd ? 'jsdoc.gemini.qworum.net' : 'localhost',
-domain  = Deno.env.get('DOMAIN') || 'localhost',
+['JSDOC_DIR', 'TLS_CERT', 'TLS_CERT_KEY']
+.forEach(envvar => console.debug(`${envvar}: ${Deno.env.get(envvar)}`));
 
-app    = new Application({
-  // WARNING has current dir as context, which is not necessarily main.ts's directory.
-  //keyFile : `../cert/key.pem`, 
-  //certFile: `../cert/cert.pem`,
-  keyFile : `../certs/${domain}/key.pem`,
-  certFile: `../certs/${domain}/cert.pem`,
-  hostname: '0.0.0.0', // reachable from all network interfaces, see https://stackoverflow.com/questions/19798254/cant-assign-requested-address-python-multicasting
-  // hostname: domain,
-  // port    : 1965,
-}),
+const
+jsdocDir = Deno.env.get('JSDOC_DIR'),    // './jsdoc'
+certFile = Deno.env.get('TLS_CERT'),     // './cert.pem'
+keyFile  = Deno.env.get('TLS_CERT_KEY'), // './key.pem'
+hostname = '0.0.0.0',                    // reachable from all network interfaces
+app      = new Application({ keyFile, certFile, hostname }),
+
+_        = new LineText(''),
 
 dirPage = async (path: string):Promise<Line[]> => {
   console.debug(`dir path: ${path}`);
   try {
     const 
-    expandedPath     = `${rootDir}/${path}`,
+    expandedPath     = `${jsdocDir}/${path}`,
     dirLines: Line[] = [],
     docLines: Line[] = await docPage(`${path}/jsdoc.json`);
   
@@ -130,7 +118,7 @@ docPage = async (path: string):Promise<Line[]> => {
   console.debug(`doc path: ${path}`);
   try {
     const 
-    expandedPath  = `${rootDir}/${path}`,
+    expandedPath  = `${jsdocDir}/${path}`,
     json          = await Deno.readTextFile(expandedPath),
     sorter        = (a:Definition | MethodDef,b:Definition | MethodDef)=>{return a.name < b.name ? -1 : (a.name === b.name ? 0 : 1);},
     jsdoc         = (JSON.parse(json) as Array<Definition>).sort(sorter),
@@ -246,7 +234,6 @@ app.use(handleRedirects(
 app.use(handleRoutes(
   mainRoute,
   dirRoute,
-  // fileRoute,
 ));
 
 app.use(async (ctx) => {
