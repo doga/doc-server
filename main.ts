@@ -1,17 +1,17 @@
 import { 
   Application,
-  Gemtext, Line, LineText, LineLink, LineHeading, // LineQuote, LineListItem,
+  Gemtext, Line, LineText, LineLink, LineHeading, // LineQuote, LineListItem, LinePreformattingToggle,
   handleRedirects, handleRoutes, Route, // Redirect,
 } from './deps.mts';
 
-import {
+import type {
   JsDoc, Param, Tag, // SeeTag, ExampleTag, ReturnTag, ParamTag, UnsupportedTag,
   Constructor, MethodDef, // FunctionDef, ClassDef,
   Definition, // ClassDefinition,
 } from "./lib/jsdoc-types.mts";
 
 ['JSDOC_DIR', 'TLS_CERT', 'TLS_CERT_KEY']
-.forEach(envvar => console.debug(`${envvar}: ${Deno.env.get(envvar)}`));
+.forEach(envvar => console.info(`${envvar}: ${Deno.env.get(envvar)}`));
 
 const
 jsdocDir = Deno.env.get('JSDOC_DIR'),    // './jsdoc'
@@ -23,7 +23,7 @@ app      = new Application({ keyFile, certFile, hostname }),
 _        = new LineText(''),
 
 dirPage = async (path: string):Promise<Line[]> => {
-  console.debug(`dir path: ${path}`);
+  // console.debug(`dir path: ${path}`);
   try {
     const 
     expandedPath     = `${jsdocDir}/${path}`,
@@ -32,7 +32,7 @@ dirPage = async (path: string):Promise<Line[]> => {
   
     // list the subdirectories
     for await (const dirEntry of Deno.readDir(expandedPath)) {
-      // console.debug(`dir: ${dirEntry.name}`);
+      // // console.debug(`dir: ${dirEntry.name}`);
       if (!dirEntry.isDirectory) continue;
       dirLines.push(new LineLink(`/${path}/${dirEntry.name}`.replace('//','/'), dirEntry.name));
     }
@@ -115,7 +115,7 @@ getJsdocLines = (jsdoc: JsDoc):Line[] =>{
 },
 
 docPage = async (path: string):Promise<Line[]> => {
-  console.debug(`doc path: ${path}`);
+  // console.debug(`doc path: ${path}`);
   try {
     const 
     expandedPath  = `${jsdocDir}/${path}`,
@@ -178,7 +178,7 @@ docPage = async (path: string):Promise<Line[]> => {
     lines.push(_);
     return lines;
   } catch (error) {
-    console.debug(`doc error: ${error}`);
+    // console.debug(`doc error: ${error}`);
     return <Line[]>[];
     // lines.push(new LineHeading('Error'));
     // lines.push(new LineText(`${error}`));
@@ -186,7 +186,7 @@ docPage = async (path: string):Promise<Line[]> => {
 },
 
 mainRoute = new Route('/', async (ctx) => {
-  // console.debug('main route');
+  // // console.debug('main route');
   try {
     const lines = await dirPage('');
 
@@ -204,10 +204,10 @@ mainRoute = new Route('/', async (ctx) => {
   }
 }),
 
-// Kaksik BUG: at most one "parameterized route" is allowed !
-// Kaksik BUG: `:path` does not match strings that contain "/" !
+// Kaksik BUG/feature: at most one "parameterized route" is allowed !
+// Kaksik BUG/feature: `:path` does not match strings that contain "/" !
 dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
-  // console.debug('dir route');
+  // // console.debug('dir route');
   try {
     const
     path : string = (ctx.pathParams as {path: string}).path,
@@ -226,6 +226,13 @@ dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
     );
   }
 });
+
+app.use(async (ctx, next) => {
+  console.info('\n▶︎', ctx.request)
+  console.time('◀︎ Responded in')
+  await next()
+  console.timeEnd('◀︎ Responded in')
+})
 
 app.use(handleRedirects(
   // new Redirect('/', '/dir/'),
