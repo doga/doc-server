@@ -51,6 +51,13 @@ TLS_CERT_KEY='./path/to/key.pem' \
 deno task server
 ```
 
+## To do
+
+Current status:
+
+- Only classes, constructors and methods are listed.
+- Setter methods are not listed.
+
 ## Live servers
 
 These Gemini capsules are running on doc-server:
