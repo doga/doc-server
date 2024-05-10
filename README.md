@@ -51,10 +51,12 @@ TLS_CERT_KEY='./path/to/key.pem' \
 deno task server
 ```
 
-## Demo
+## Live servers
 
-This Gemini site is running on doc-server:
+These Gemini capsules are running on doc-server:
 
 - __Qworum JSdoc server__: `gemini://qworum-jdoc.ddns.net/`
+
+Send a pull request to add your doc-server capsule here.
 
 ∎
