@@ -57,7 +57,8 @@ dirPage = async (path: string):Promise<Line[]> => {
 },
 
 getJsdocLines = (jsdoc: JsDoc):Line[] =>{
-  const lines: Line[] = [
+  const lines: Line[] = [];
+  if(jsdoc.doc) [
     new LineText(jsdoc.doc.trim()), _,
   ];
   for (const tag of (jsdoc.tags as Tag[])) {
@@ -125,6 +126,7 @@ docPage = async (path: string):Promise<Line[]> => {
     lines: Line[] = [_];
 
     for (const def of jsdoc) {
+      // console.debug(`\nDefinition(name: ${def.name}, kind: ${def.kind})`);
       if (def.kind === 'class') {
         // header
         let classHeader = `${def.kind} ${def.name}`;
@@ -139,6 +141,7 @@ docPage = async (path: string):Promise<Line[]> => {
 
         // constructor
         for (const constr of (def.classDef.constructors as Constructor[])) {
+          // console.debug(`constructor`);
           if (constr.jsDoc) {
             // header
             const 
@@ -147,24 +150,31 @@ docPage = async (path: string):Promise<Line[]> => {
 
             lines.push(new LineHeading(constrHeader, 3)); lines.push(_);
 
-            const jsdocLines = getJsdocLines(constr.jsDoc);
+            if (constr.jsDoc) {
+              const jsdocLines = getJsdocLines(constr.jsDoc);
 
-            for (const line of jsdocLines) lines.push(line);
-            lines.push(_);
+              for (const line of jsdocLines) lines.push(line);
+              lines.push(_);
+            }
           }
         }
         // lines.push(_);
 
         // methods
         for (const method of (def.classDef.methods as MethodDef[]).sort(sorter)) {
-          if (method.jsDoc) {
-            // header
-            const 
-            staticMarker = method.isStatic ? 'static ' : '',
-            paramNames: string = (method.functionDef.params as Param[]).map(p => p.name).join(', '),
-            methodHeader: string = method.kind === 'getter' ? `${staticMarker}${method.name}` : `${staticMarker}${method.name}(${paramNames})`;
+          // console.debug(`method: ${method.name}`);
+          // header
+          const 
+          staticMarker = method.isStatic ? 'static ' : '',
+          asyncMarker = method.functionDef.isAsync ? 'async ' : '',
+          paramNames: string = (method.functionDef.params as Param[]).map(p => p.name).join(', '),
+          methodHeader: string = method.kind === 'getter' ? `getter ${method.name}` : `${staticMarker}${asyncMarker}${method.name}(${paramNames})`;
 
-            lines.push(new LineHeading(methodHeader, 3)); lines.push(_);
+          // console.debug(`method header: ${methodHeader}`);
+          lines.push(new LineHeading(methodHeader, 3)); lines.push(_);
+
+          if (method.jsDoc) {
+            // console.debug(`  reading jsdoc`);
             const jsdocLines = getJsdocLines(method.jsDoc);
 
             for (const line of jsdocLines) lines.push(line);
@@ -178,7 +188,7 @@ docPage = async (path: string):Promise<Line[]> => {
     lines.push(_);
     return lines;
   } catch (error) {
-    // console.debug(`doc error: ${error}`);
+    console.error(`🔴 doc error: ${error}`);
     return <Line[]>[];
     // lines.push(new LineHeading('Error'));
     // lines.push(new LineText(`${error}`));
@@ -228,10 +238,10 @@ dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
 });
 
 app.use(async (ctx, next) => {
-  console.info('\n▶︎', ctx.request)
-  console.time('◀︎ Responded in')
+  console.info(`\n▶︎ ${new Date()}\n`, ctx.request)
+  console.time('◀︎ Latency')
   await next()
-  console.timeEnd('◀︎ Responded in')
+  console.timeEnd('◀︎ Latency')
 })
 
 app.use(handleRedirects(
