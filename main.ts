@@ -1,4 +1,5 @@
 // TODO make this a library, add mod.mts
+// TODO test cache-purging after an update to a jsdoc.json file
 
 import { 
   Application,
@@ -15,7 +16,7 @@ import type {
 import { Cache } from './lib/cache.mts';
 
 ['JSDOC_DIR', 'TLS_CERT', 'TLS_CERT_KEY', 'CACHE_SIZE']
-.forEach(envvar => console.info(`${envvar}: ${Deno.env.get(envvar)}`));
+.forEach(envvar => console.info(`${envvar}:\n  ${Deno.env.get(envvar)}`));
 
 const
 jsdocDir  = Deno.env.get('JSDOC_DIR'),                     // './jsdoc'
@@ -219,7 +220,7 @@ mainRoute = new Route('/', async (ctx) => {
       const cached = cache.get(path);
 
       if (cached ) {
-        const fileInfo = await getFileInfo('');
+        const fileInfo = await getFileInfo('jsdoc.json');
         if (fileInfo.mtime && !(cached.timestamp < fileInfo.mtime)) {
           // console.debug(`Serving from cache: '${path}'`);
           ctx.response.body = cached.bytes;
@@ -258,10 +259,9 @@ dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
     if (cacheSize > 0) {
       const cached = cache.get(path);
       if (cached ) {
-        const fileInfo = await getFileInfo('');
-        // console.debug(`timestamps = {cached: ${cached.timestamp}, file: ${fileInfo.mtime}}`);
+        const fileInfo = await getFileInfo(`${path}/jsdoc.json`);
         if (fileInfo.mtime && !(cached.timestamp < fileInfo.mtime)) {
-          // console.debug(`Serving from cache: '${path}'`);
+          // console.debug(`Serving from  cache: '${path}'`);
           ctx.response.body = cached.bytes;
           return;
         }
