@@ -127,7 +127,7 @@ docPage = async (path: string):Promise<Line[]> => {
 
     for (const def of jsdoc) {
       // console.debug(`\nDefinition(name: ${def.name}, kind: ${def.kind})`);
-      if (def.kind === 'class') {
+      if (def.kind === 'class' && def.declarationKind === 'export') {
         // header
         let classHeader = `${def.kind} ${def.name}`;
         if (def.classDef.extends) {

@@ -81,9 +81,10 @@ type ClassDef = {
 };
 
 type ClassDefinition = {
-  kind: 'class',
-  name: string, 
-  classDef: ClassDef,
+  kind           : 'class',
+  declarationKind: string,
+  name           : string,
+  classDef       : ClassDef,
 };
 
 type Definition = ClassDefinition;
