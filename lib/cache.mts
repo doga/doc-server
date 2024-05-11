@@ -1,0 +1,94 @@
+import { Gemtext } from "../deps.mts";
+
+type Value = {
+  bytes: Uint8Array,
+  timestamp: Date,
+};
+
+class Cache {
+  #maxSize: number;
+  #size: number;
+  #cache = new Map<string, Value>();
+  #lru = new Array<string>(); // Most recently accessed path is first
+
+  #encoder = new TextEncoder();
+
+  /**
+   * Creates an in-memory Gemtext cache.
+   * @param {number | undefined} size Cache size. Unit is 10_000 bytes. Default is 100.
+   */
+  constructor(size?: number) {
+    size = Math.floor(size || 100);
+    if(size<0)size = 0;
+    this.#maxSize = size * 10_000;
+    this.#size = 0;
+  }
+
+
+  set(path: string, gemtext: Gemtext):boolean {
+    try {
+      const bytes: Uint8Array = this.#encoder.encode(gemtext.string);
+
+      this._purge(path, bytes.length);
+      this.#cache.set(path, {bytes, timestamp: new Date()});
+      this.#lru.unshift(path);
+
+      return true;
+    } catch (_error) {
+      return false;
+    }
+  }
+
+
+  get(path: string): Value | null {
+    try {
+      this._touch(path);
+      return this.#cache.get(path) || null;
+    } catch (_error) {
+      return null;
+    }
+  }
+
+  _touch(path: string){
+    if(!this.#cache.has(path))throw new TypeError('unknown path');
+    this.#lru = this.#lru.filter(p => p !== path);
+    this.#lru.unshift(path);
+  }
+
+
+  _purge(path: string, bytesToFree: number) {
+    let freed = 0;
+
+    // remove stored bytes for this path
+    if (this.#cache.has(path)) {
+      const v = this.#cache.get(path);
+
+      if (v) {
+        this.#cache.delete(path);
+        this.#lru = this.#lru.filter(p => p !== path);
+        this.#size -= v.bytes.length;
+        freed += v.bytes.length;
+      }
+    }
+
+    if(bytesToFree > this.#maxSize)throw new TypeError('uncacheable');
+
+    // remove stored bytes for other paths
+    while (freed < bytesToFree && this.#cache.size > 0) {
+      const
+      p = this.#lru[0],
+      v = this.#cache.get(p);
+
+      if (v) {
+        this.#lru.pop();
+        this.#cache.delete(p);
+        this.#size -= v.bytes.length;
+        freed += v.bytes.length;
+      }
+    }
+  }
+
+}
+
+export type {Value};
+export {Cache};

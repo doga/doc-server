@@ -1,3 +1,7 @@
+// TODO add caching
+// TODO make this a library, add mod.mts
+
+
 import { 
   Application,
   Gemtext, Line, LineText, LineLink, LineHeading, // LineQuote, LineListItem, LinePreformattingToggle,
@@ -8,16 +12,19 @@ import type {
   JsDoc, Param, Tag, // SeeTag, ExampleTag, ReturnTag, ParamTag, UnsupportedTag,
   Constructor, MethodDef, // FunctionDef, ClassDef,
   Definition, // ClassDefinition,
-} from "./lib/jsdoc-types.mts";
+} from './lib/jsdoc-types.mts';
+
+import { Cache } from './lib/cache.mts';
 
 ['JSDOC_DIR', 'TLS_CERT', 'TLS_CERT_KEY']
 .forEach(envvar => console.info(`${envvar}: ${Deno.env.get(envvar)}`));
 
 const
-jsdocDir = Deno.env.get('JSDOC_DIR'),    // './jsdoc'
-certFile = Deno.env.get('TLS_CERT'),     // './cert.pem'
-keyFile  = Deno.env.get('TLS_CERT_KEY'), // './key.pem'
-hostname = '0.0.0.0',                    // reachable from all network interfaces
+jsdocDir = Deno.env.get('JSDOC_DIR'),                          // './jsdoc'
+certFile = Deno.env.get('TLS_CERT'),                           // './cert.pem'
+keyFile  = Deno.env.get('TLS_CERT_KEY'),                       // './key.pem'
+hostname = '0.0.0.0',                                          // reachable from all network interfaces
+cache    = new Cache(),
 app      = new Application({ keyFile, certFile, hostname }),
 
 _        = new LineText(''),
@@ -115,6 +122,14 @@ getJsdocLines = (jsdoc: JsDoc):Line[] =>{
   return lines;
 },
 
+getFileInfo = async (path: string): Promise<Deno.FileInfo> => {
+  const 
+  expandedPath = `${jsdocDir}/${path}`,
+  fileInfo     = await Deno.stat(expandedPath);
+
+  return fileInfo;
+},
+
 docPage = async (path: string):Promise<Line[]> => {
   // console.debug(`doc path: ${path}`);
   try {
@@ -198,13 +213,28 @@ docPage = async (path: string):Promise<Line[]> => {
 mainRoute = new Route('/', async (ctx) => {
   // // console.debug('main route');
   try {
-    const lines = await dirPage('');
+    // prefer returning gemtext from cache
+    const 
+    path = '/',
+    cached = cache.get(path);
+    if (cached ) {
+      const fileInfo = await getFileInfo('');
+      if (fileInfo.mtime && !(cached.timestamp < fileInfo.mtime)) {
+        ctx.response.body = cached.bytes;
+        return;
+      }
+    }
 
-    ctx.response.body =
-    new Gemtext(
+    // generate gemtext from scratch
+    const 
+    lines = await dirPage(''),
+    gemtext = new Gemtext(
       new LineHeading('Qworum JSdoc Server', 1), _,
       ...lines,
     );
+    cache.set(path, gemtext);
+    ctx.response.body = gemtext;
+
   } catch (error) {
     ctx.response.body =
     new Gemtext(
@@ -219,15 +249,28 @@ mainRoute = new Route('/', async (ctx) => {
 dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
   // // console.debug('dir route');
   try {
-    const
-    path : string = (ctx.pathParams as {path: string}).path,
-    lines = await dirPage(path);
+    const path: string = (ctx.pathParams as {path: string}).path;
 
-    ctx.response.body =
-    new Gemtext(
+    // prefer returning gemtext from cache
+    const cached = cache.get(path);
+    if (cached ) {
+      const fileInfo = await getFileInfo('');
+      // console.debug(`timestamps = {cached: ${cached.timestamp}, file: ${fileInfo.mtime}}`);
+      if (fileInfo.mtime && !(cached.timestamp < fileInfo.mtime)) {
+        ctx.response.body = cached.bytes;
+        return;
+      }
+    }
+
+    // generate gemtext from scratch
+    const 
+    lines = await dirPage(path),
+    gemtext = new Gemtext(
       new LineHeading(`${path}`, 1), _,
       ...lines,
     );
+    cache.set(path, gemtext);
+    ctx.response.body = gemtext;
   } catch (error) {
     ctx.response.body =
     new Gemtext(
@@ -238,11 +281,12 @@ dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
 });
 
 app.use(async (ctx, next) => {
-  console.info(`\n▶︎ ${new Date()}\n`, ctx.request)
-  console.time('◀︎ Latency')
-  await next()
-  console.timeEnd('◀︎ Latency')
-})
+  const logLine = `[${new Date().toISOString()}] ${ctx.request.path}`;
+  console.time(logLine);
+  await next();
+  // console.debug(ctx.response);
+  console.timeEnd(logLine);
+});
 
 app.use(handleRedirects(
   // new Redirect('/', '/dir/'),
