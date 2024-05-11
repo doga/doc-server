@@ -1,6 +1,6 @@
 # doc-server
 
-A Gemini server for serving JSdoc on the [Deno](https://deno.com/) JavaScript runtime.
+A Gemini server for serving JSDoc documentation on the [Deno](https://deno.com/) JavaScript runtime.
 
 ## What is Gemini?
 
@@ -48,8 +48,11 @@ Additional requirements:
 JSDOC_DIR='./path/to/jsdoc' \
 TLS_CERT='./path/to/cert.pem' \
 TLS_CERT_KEY='./path/to/key.pem' \
+CACHE_SIZE=1000 \
 deno task server
 ```
+
+`CACHE_SIZE` defines the size of the in-memory cache. It is optional and has the default value 100 (meaning 100 x 10_000 bytes). The cache can be disabled by setting `CACHE_SIZE` to 0.
 
 ## To do
 

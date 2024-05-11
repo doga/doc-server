@@ -19,8 +19,10 @@ class Cache {
    */
   constructor(size?: number) {
     size = Math.floor(size || 100);
-    if(size<0)size = 0;
-    this.#maxSize = size * 10_000;
+    if(size<1)size = 1;
+    size = size * 10_000;
+    // console.debug(`Setting cache size to ${size} bytes`);
+    this.#maxSize = size;
     this.#size = 0;
   }
 

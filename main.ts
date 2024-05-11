@@ -1,6 +1,4 @@
-// TODO add caching
 // TODO make this a library, add mod.mts
-
 
 import { 
   Application,
@@ -16,18 +14,19 @@ import type {
 
 import { Cache } from './lib/cache.mts';
 
-['JSDOC_DIR', 'TLS_CERT', 'TLS_CERT_KEY']
+['JSDOC_DIR', 'TLS_CERT', 'TLS_CERT_KEY', 'CACHE_SIZE']
 .forEach(envvar => console.info(`${envvar}: ${Deno.env.get(envvar)}`));
 
 const
-jsdocDir = Deno.env.get('JSDOC_DIR'),                          // './jsdoc'
-certFile = Deno.env.get('TLS_CERT'),                           // './cert.pem'
-keyFile  = Deno.env.get('TLS_CERT_KEY'),                       // './key.pem'
-hostname = '0.0.0.0',                                          // reachable from all network interfaces
-cache    = new Cache(),
-app      = new Application({ keyFile, certFile, hostname }),
+jsdocDir  = Deno.env.get('JSDOC_DIR'),                     // './jsdoc'
+certFile  = Deno.env.get('TLS_CERT'),                      // './cert.pem'
+keyFile   = Deno.env.get('TLS_CERT_KEY'),                  // './key.pem'
+cacheSize = parseInt(Deno.env.get('CACHE_SIZE') || '100'), // in-memory cache for gemtext content
+cache     = new Cache(cacheSize), // cache size is set to 10_000 bytes if cacheSize<1, but doc-server won't use the cache if this is the case
+hostname  = '0.0.0.0', // reachable from all network interfaces
+_         = new LineText(''),
 
-_        = new LineText(''),
+app       = new Application({ keyFile, certFile, hostname }),
 
 dirPage = async (path: string):Promise<Line[]> => {
   // console.debug(`dir path: ${path}`);
@@ -202,8 +201,8 @@ docPage = async (path: string):Promise<Line[]> => {
 
     lines.push(_);
     return lines;
-  } catch (error) {
-    console.error(`🔴 doc error: ${error}`);
+  } catch (_error) {
+    // console.error(`🔴 doc error: ${error}`);
     return <Line[]>[];
     // lines.push(new LineHeading('Error'));
     // lines.push(new LineText(`${error}`));
@@ -213,15 +212,19 @@ docPage = async (path: string):Promise<Line[]> => {
 mainRoute = new Route('/', async (ctx) => {
   // // console.debug('main route');
   try {
+    const path = '/';
+
     // prefer returning gemtext from cache
-    const 
-    path = '/',
-    cached = cache.get(path);
-    if (cached ) {
-      const fileInfo = await getFileInfo('');
-      if (fileInfo.mtime && !(cached.timestamp < fileInfo.mtime)) {
-        ctx.response.body = cached.bytes;
-        return;
+    if (cacheSize > 0) {
+      const cached = cache.get(path);
+
+      if (cached ) {
+        const fileInfo = await getFileInfo('');
+        if (fileInfo.mtime && !(cached.timestamp < fileInfo.mtime)) {
+          // console.debug(`Serving from cache: '${path}'`);
+          ctx.response.body = cached.bytes;
+          return;
+        }
       }
     }
 
@@ -252,13 +255,16 @@ dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
     const path: string = (ctx.pathParams as {path: string}).path;
 
     // prefer returning gemtext from cache
-    const cached = cache.get(path);
-    if (cached ) {
-      const fileInfo = await getFileInfo('');
-      // console.debug(`timestamps = {cached: ${cached.timestamp}, file: ${fileInfo.mtime}}`);
-      if (fileInfo.mtime && !(cached.timestamp < fileInfo.mtime)) {
-        ctx.response.body = cached.bytes;
-        return;
+    if (cacheSize > 0) {
+      const cached = cache.get(path);
+      if (cached ) {
+        const fileInfo = await getFileInfo('');
+        // console.debug(`timestamps = {cached: ${cached.timestamp}, file: ${fileInfo.mtime}}`);
+        if (fileInfo.mtime && !(cached.timestamp < fileInfo.mtime)) {
+          // console.debug(`Serving from cache: '${path}'`);
+          ctx.response.body = cached.bytes;
+          return;
+        }
       }
     }
 
@@ -297,11 +303,9 @@ app.use(handleRoutes(
   dirRoute,
 ));
 
-app.use(async (ctx) => {
+app.use((ctx) => {
   ctx.response.body = new Gemtext(
     new LineHeading('No routes matched'), 
-    // _,
-    // new LineText('Running fallback middleware')
   );
 });
 
