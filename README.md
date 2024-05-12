@@ -32,6 +32,8 @@ Do this each time the JSDoc in the source code changes:
 deno doc --json --name=MODULENAME ./path/to/mod.mjs > ./path/to/jsdoc/MODULENAME/jsdoc.json
 ```
 
+The server does not need a restart to serve new content.
+
 Note that the `jsdoc` directory has a strict structure. It can contain:
 
 - a `jsdoc.json` file at the root, and
