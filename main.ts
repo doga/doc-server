@@ -59,9 +59,10 @@ dirPage = async (path: string):Promise<Line[]> => {
     }
 
     return dirLines;
-  } catch (error) {
+  } catch (_error) {
     // dirLines.push(new LineHeading('Error'));
-    return [new LineText(`${error}`)];
+    // return [new LineText(`${error}`)];
+    return [new LineText('Not found.')];
   }
 },
 
@@ -295,7 +296,8 @@ dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
     ctx.response.body =
     new Gemtext(
       new LineHeading('Error', 1), _,
-      new LineText(`${error}`)
+      // new LineText(`${error}`)
+      new LineText('Not found.')
     );
   }
 });
