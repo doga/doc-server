@@ -18,6 +18,8 @@ import { Cache } from './lib/cache.mts';
 ['JSDOC_DIR', 'TLS_CERT', 'TLS_CERT_KEY', 'CACHE_SIZE']
 .forEach(envvar => console.info(`${envvar}:\n  ${Deno.env.get(envvar)}`));
 
+let servingFromCache = false;
+
 const
 jsdocDir  = Deno.env.get('JSDOC_DIR'),                     // './jsdoc'
 certFile  = Deno.env.get('TLS_CERT'),                      // './cert.pem'
@@ -220,9 +222,19 @@ mainRoute = new Route('/', async (ctx) => {
       const cached = cache.get(path);
 
       if (cached ) {
-        const fileInfo = await getFileInfo('jsdoc.json');
-        if (fileInfo.mtime && !(cached.timestamp < fileInfo.mtime)) {
+        const fileInfo = await getFileInfo('');
+        let jsdocInfo: Deno.FileInfo | undefined;
+        try {
+          jsdocInfo = await getFileInfo('jsdoc.json');
+        } catch (_error) {
+          // console.debug('root dir has no jsdoc.json');
+        }
+        if (
+          fileInfo.mtime && !(cached.timestamp < fileInfo.mtime) &&
+          (!jsdocInfo || (jsdocInfo.mtime && !(cached.timestamp < jsdocInfo.mtime)) )
+        ) {
           // console.debug(`Serving from cache: '${path}'`);
+          servingFromCache = true;
           ctx.response.body = cached.bytes;
           return;
         }
@@ -254,6 +266,7 @@ dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
   // // console.debug('dir route');
   try {
     const path: string = (ctx.pathParams as {path: string}).path;
+    // console.debug(`dir route path: '${path}'`);
 
     // prefer returning gemtext from cache
     if (cacheSize > 0) {
@@ -262,6 +275,7 @@ dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
         const fileInfo = await getFileInfo(`${path}/jsdoc.json`);
         if (fileInfo.mtime && !(cached.timestamp < fileInfo.mtime)) {
           // console.debug(`Serving from  cache: '${path}'`);
+          servingFromCache = true;
           ctx.response.body = cached.bytes;
           return;
         }
@@ -287,11 +301,22 @@ dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
 });
 
 app.use(async (ctx, next) => {
-  const logLine = `[${new Date().toISOString()}] ${ctx.request.path}`;
-  console.time(logLine);
+  servingFromCache = false;
+
+  const ingressDate = new Date();
+  
+  // console.time(logLine);
   await next();
   // console.debug(ctx.response);
-  console.timeEnd(logLine);
+  
+  const 
+  egressDate = new Date(),
+  latencyInMilliseconds = egressDate.getTime() - ingressDate.getTime(),
+  latencyTag = ` • ${latencyInMilliseconds} ms`,
+  cacheTag = servingFromCache ? ' • from cache' : '',
+  logLine = `[${ingressDate.toISOString()}] ${ctx.request.path}${latencyTag}${cacheTag}`;
+
+  console.info(logLine);
 });
 
 app.use(handleRedirects(
