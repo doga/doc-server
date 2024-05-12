@@ -74,6 +74,7 @@ class Cache {
     }
 
     if(bytesToFree > this.#maxSize)throw new TypeError('uncacheable');
+    if(bytesToFree <= this.#maxSize - this.#size)return;
 
     // remove stored bytes for other paths
     while (freed < bytesToFree && this.#cache.size > 0) {

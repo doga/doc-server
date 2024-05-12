@@ -336,7 +336,7 @@ app.use((ctx) => {
 
 while(true)
 try {
-  await app.start();
+  await app.start(); // BUG caches only the last request
 } catch (error) {
   console.error(`Restarting the server after this error: ${error}`);
 }
