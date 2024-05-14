@@ -1,4 +1,5 @@
-import { Gemtext } from "../deps.mts";
+import { Gemtext, LineText } from "../deps.mts";
+const _ = new LineText('');
 
 type Value = {
   bytes: Uint8Array,
@@ -29,6 +30,13 @@ class Cache {
 
   set(path: string, gemtext: Gemtext):boolean {
     try {
+      const timestamp = [
+        _,
+        // new LineText('————————————————————'),
+        // new LineText('In-memory cache:'),
+        new LineText(`📅 Cached on ${new Date()}`),
+      ];
+      gemtext.append(...timestamp);
       const bytes: Uint8Array = this.#encoder.encode(gemtext.string);
 
       this._purge(path, bytes.length);

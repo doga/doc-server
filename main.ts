@@ -1,5 +1,4 @@
-// TODO make this a library, add mod.mts
-// TODO test cache-purging after an update to a jsdoc.json file
+// TODO make this a library
 
 import { 
   Application,
@@ -25,7 +24,7 @@ jsdocDir  = Deno.env.get('JSDOC_DIR'),                     // './jsdoc'
 certFile  = Deno.env.get('TLS_CERT'),                      // './cert.pem'
 keyFile   = Deno.env.get('TLS_CERT_KEY'),                  // './key.pem'
 cacheSize = parseInt(Deno.env.get('CACHE_SIZE') || '100'), // in-memory cache for gemtext content
-cache     = new Cache(cacheSize), // cache size is set to 10_000 bytes if cacheSize<1, but doc-server won't use the cache if this is the case
+cache     = cacheSize > 0 ? new Cache(cacheSize) : null, // cache size is set to 10_000 bytes if cacheSize<1, but doc-server won't use the cache if this is the case
 hostname  = '0.0.0.0', // reachable from all network interfaces
 _         = new LineText(''),
 
@@ -220,7 +219,7 @@ mainRoute = new Route('/', async (ctx) => {
 
     // prefer returning gemtext from cache
     if (cacheSize > 0) {
-      const cached = cache.get(path);
+      const cached = cache?.get(path);
 
       if (cached ) {
         const fileInfo = await getFileInfo('');
@@ -249,14 +248,17 @@ mainRoute = new Route('/', async (ctx) => {
       new LineHeading('Qworum JSdoc Server', 1), _,
       ...lines,
     );
-    cache.set(path, gemtext);
+    cache?.set(path, gemtext);
     ctx.response.body = gemtext;
 
-  } catch (error) {
+  } catch (_error) {
     ctx.response.body =
     new Gemtext(
-      new LineHeading('Error'), _,
-      new LineText(`${error}`)
+      // new LineHeading('Error'), _,
+      // new LineText(`${error}`)
+      new LineHeading('Error', 1), _,
+      // new LineText(`${error}`)
+      new LineText('Not found.')
     );
   }
 }),
@@ -271,7 +273,7 @@ dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
 
     // prefer returning gemtext from cache
     if (cacheSize > 0) {
-      const cached = cache.get(path);
+      const cached = cache?.get(path);
       if (cached ) {
         const fileInfo = await getFileInfo(`${path}/jsdoc.json`);
         if (fileInfo.mtime && !(cached.timestamp < fileInfo.mtime)) {
@@ -290,9 +292,9 @@ dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
       new LineHeading(`${path}`, 1), _,
       ...lines,
     );
-    cache.set(path, gemtext);
+    cache?.set(path, gemtext);
     ctx.response.body = gemtext;
-  } catch (error) {
+  } catch (_error) {
     ctx.response.body =
     new Gemtext(
       new LineHeading('Error', 1), _,
