@@ -245,7 +245,7 @@ mainRoute = new Route('/', async (ctx) => {
     const 
     lines = await dirPage(''),
     gemtext = new Gemtext(
-      new LineHeading('Qworum JSdoc Server', 1), _,
+      new LineHeading('Qworum JSDoc Server', 1), _,
       ...lines,
     );
     cache?.set(path, gemtext);
