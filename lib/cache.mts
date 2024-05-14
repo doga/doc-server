@@ -1,5 +1,5 @@
 import { Gemtext, LineText } from "../deps.mts";
-import { convertToMathematicalSansSerifItalic } from "./text-effects.mts";
+import { convert, Effect } from "./text-effects.mts";
 const _ = new LineText('');
 
 type Value = {
@@ -32,7 +32,7 @@ class Cache {
   set(path: string, gemtext: Gemtext):boolean {
     try {
       const 
-      timestamp = convertToMathematicalSansSerifItalic(`Cached on ${new Date()}`),
+      timestamp = convert(`Cached on ${new Date()}`, Effect.MathematicalSansSerifItalic),
       lines = [
         _,
         // new LineText('————————————————————'),

@@ -3,6 +3,13 @@ type CharacterMap = {
   [key: string]: string;
 };
 
+const enum Effect {
+  MathematicalSansSerifItalic,
+}
+
+// Created with GPT-3.5 Turbo in 2 consecutive requests (1st one was lacking):
+// 1. "Write a JavaScript function that replaces characters in a Unicode string into their “MATHEMATICAL SANS-SERIF ITALIC” counterparts."
+// 2. "Rewrite the same function as before, but now replace the numbers as well."
 function convertToMathematicalSansSerifItalic(input: string) {
   const characterMap: CharacterMap = {
       'A': '𝑨', 'B': '𝑩', 'C': '𝑪', 'D': '𝑫', 'E': '𝑬', 'F': '𝑭', 'G': '𝑮', 'H': '𝑯',
@@ -25,4 +32,19 @@ function convertToMathematicalSansSerifItalic(input: string) {
   return result;
 }
 
-export {convertToMathematicalSansSerifItalic};
+function convert(
+  input : string,
+  effect: Effect = Effect.MathematicalSansSerifItalic
+) {
+  switch (effect) {
+    case Effect.MathematicalSansSerifItalic:
+      return convertToMathematicalSansSerifItalic(input);
+    default:
+      return input;
+  }
+}
+
+export {
+  Effect,
+  convert,
+};
