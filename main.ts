@@ -28,8 +28,6 @@ cache     = cacheSize > 0 ? new Cache(cacheSize) : null, // cache size is set to
 hostname  = '0.0.0.0', // reachable from all network interfaces
 _         = new LineText(''),
 
-app       = new Application({ keyFile, certFile, hostname }),
-
 dirPage = async (path: string):Promise<Line[]> => {
   // console.debug(`dir path: ${path}`);
   try {
@@ -302,45 +300,49 @@ dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
       new LineText('Not found.')
     );
   }
-});
+}),
 
-app.use(async (ctx, next) => {
-  servingFromCache = false;
+run = async (): Promise<void> => {
+  while(true) try {
+    const app = new Application({ keyFile, certFile, hostname });
 
-  const ingressDate = new Date();
-  
-  // console.time(logLine);
-  await next();
-  // console.debug(ctx.response);
-  
-  const 
-  egressDate = new Date(),
-  latencyInMilliseconds = egressDate.getTime() - ingressDate.getTime(),
-  latencyTag = ` • ${latencyInMilliseconds} ms`,
-  cacheTag = servingFromCache ? ' • from cache' : '',
-  logLine = `[${ingressDate.toISOString()}] ${ctx.request.path}${latencyTag}${cacheTag}`;
+    app.use(async (ctx, next) => {
+      servingFromCache = false;
 
-  console.info(logLine);
-});
+      const ingressDate = new Date();
+      
+      // console.time(logLine);
+      await next();
+      // console.debug(ctx.response);
+      
+      const 
+      egressDate = new Date(),
+      latencyInMilliseconds = egressDate.getTime() - ingressDate.getTime(),
+      latencyTag = ` • ${latencyInMilliseconds} ms`,
+      cacheTag = servingFromCache ? ' • from cache' : '',
+      logLine = `[${ingressDate.toISOString()}] ${ctx.request.path}${latencyTag}${cacheTag}`;
 
-app.use(handleRedirects(
-  // new Redirect('/', '/dir/'),
-));
+      console.info(logLine);
+    });
 
-app.use(handleRoutes(
-  mainRoute,
-  dirRoute,
-));
+    app.use(handleRedirects(
+      // new Redirect('/', '/dir/'),
+    ));
 
-app.use((ctx) => {
-  ctx.response.body = new Gemtext(
-    new LineHeading('No routes matched'), 
-  );
-});
+    app.use(handleRoutes(
+      mainRoute,
+      dirRoute,
+    ));
 
-while(true)
-try {
-  await app.start(); // BUG caches only the last request
-} catch (error) {
-  console.error(`Restarting the server after this error: ${error}`);
-}
+    app.use((ctx) => {
+      ctx.response.body = new Gemtext(
+        new LineHeading('No routes matched'), 
+      );
+    });
+    await app.start();
+  } catch (error) {
+    console.error('Restarting the server after this error: ', error);
+  }
+};
+
+await run();

@@ -1,5 +1,3 @@
-// import { LineText } from "../kaksik/mod.ts";
-
 export type {
   HeadingLevel,
 // } from '../kaksik/mod.ts';
