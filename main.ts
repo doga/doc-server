@@ -1,6 +1,6 @@
 
 import { Server } from "./lib/server.mts";
-import type { ServerConfig } from "./mod.mts";
+import type { ServerConfig } from "./lib/server.mts";
 
 const
 jsdocDir:  string | undefined = Deno.env.get('JSDOC_DIR')    || undefined,
