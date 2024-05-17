@@ -1,3 +1,4 @@
+// module registered on deno.land/x
 
 import { Server } from "./lib/server.mts";
 import type { ServerConfig } from "./mod.mts";
