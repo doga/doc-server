@@ -73,7 +73,7 @@ Current status:
 
 These Gemini capsules are running on doc-server:
 
-- __Qworum JSDoc server__: `gemini://qworum-jdoc.ddns.net/`
+- __Qworum JSDoc server__: [gemini://qworum-jdoc.ddns.net/](gemini://qworum-jdoc.ddns.net/)
 
 To add your doc-server capsule here, simply send a pull request.
 
