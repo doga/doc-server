@@ -12,8 +12,6 @@ A Gemini server for serving JSDoc documentation on the [Deno](https://deno.com/)
 git clone https://github.com/doga/doc-server.git
 ```
 
-_Note: This library is also published on `deno.land/x` under the name `jsdocserver` but for some reason importing from `https://deno.land/x/jsdocserver@VERSION/mod.mts` does not work, so `git clone` is currently the only install method._
-
 ## Usage
 
 ### 1. Create a TLS certificate and private key
