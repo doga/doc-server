@@ -12,6 +12,8 @@ A Gemini server for serving JSDoc documentation on the [Deno](https://deno.com/)
 git clone https://github.com/doga/doc-server.git
 ```
 
+_Note: This library is also published on `deno.land/x` under the name `jsdocserver` but for some reason importing from `https://deno.land/x/jsdocserver@VERSION/mod.mts` does not work, so `git clone` is currently the only install method._
+
 ## Usage
 
 ### 1. Create a TLS certificate and private key
@@ -47,14 +49,18 @@ Additional requirements:
 ### 3. Run the JSDoc server
 
 ```shell
-JSDOC_DIR='./path/to/jsdoc' \
-TLS_CERT='./path/to/cert.pem' \
-TLS_CERT_KEY='./path/to/key.pem' \
-CACHE_SIZE=1000 \
+JSDOC_DIR='./jsdoc' \
+TLS_CERT='./cert/cert.pem' \
+TLS_CERT_KEY='./cert/key.pem' \
+CACHE_SIZE='100' \
+HOSTNAME='0.0.0.0' \
+PORT='1965'
 deno task server
 ```
 
-`CACHE_SIZE` defines the size of the in-memory cache. It is optional and has the default value 100 (meaning 100 x 10_000 bytes). The cache can be disabled by setting `CACHE_SIZE` to 0.
+All environment variables are optional. The command above shows their default values.
+
+`CACHE_SIZE` defines the size of the in-memory cache. 1 means 10 000 bytes. 0 disables the cache.
 
 ## To do
 
