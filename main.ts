@@ -1,348 +1,373 @@
-// TODO make this a library
 
-import { 
-  Application,
-  Gemtext, Line, LineText, LineLink, LineHeading, // LineQuote, LineListItem, LinePreformattingToggle,
-  handleRedirects, handleRoutes, Route, // Redirect,
-} from './deps.mts';
+import { Server } from "./lib/server.mts";
+import type { ServerConfig } from "./mod.mts";
 
-import type {
-  JsDoc, Param, Tag, // SeeTag, ExampleTag, ReturnTag, ParamTag, UnsupportedTag,
-  Constructor, MethodDef, // FunctionDef, ClassDef,
-  Definition, // ClassDefinition,
-} from './lib/jsdoc-types.mts';
+// import { 
+//   Application,
+//   Gemtext, Line, LineText, LineLink, LineHeading, // LineQuote, LineListItem, LinePreformattingToggle,
+//   handleRedirects, handleRoutes, Route, // Redirect,
+// } from './deps.mts';
 
-import { Cache } from './lib/cache.mts';
+// import type {
+//   JsDoc, Param, Tag, // SeeTag, ExampleTag, ReturnTag, ParamTag, UnsupportedTag,
+//   Constructor, MethodDef, // FunctionDef, ClassDef,
+//   Definition, // ClassDefinition,
+// } from './lib/jsdoc-types.mts';
 
-['JSDOC_DIR', 'TLS_CERT', 'TLS_CERT_KEY', 'CACHE_SIZE']
-.forEach(envvar => console.info(`${envvar}:\n  ${Deno.env.get(envvar)}`));
+// import { Cache } from './lib/cache.mts';
 
-let servingFromCache = false;
 
-const
-jsdocDir  = Deno.env.get('JSDOC_DIR'),                     // './jsdoc'
-certFile  = Deno.env.get('TLS_CERT'),                      // './cert.pem'
-keyFile   = Deno.env.get('TLS_CERT_KEY'),                  // './key.pem'
-cacheSize = parseInt(Deno.env.get('CACHE_SIZE') || '100'), // in-memory cache for gemtext content
-cache     = cacheSize > 0 ? new Cache(cacheSize) : null, // cache size is set to 10_000 bytes if cacheSize<1, but doc-server won't use the cache if this is the case
-hostname  = '0.0.0.0', // reachable from all network interfaces
-_         = new LineText(''),
+// ['JSDOC_DIR', 'TLS_CERT', 'TLS_CERT_KEY', 'CACHE_SIZE']
+// .forEach(envvar => console.info(`${envvar}:\n  ${Deno.env.get(envvar)}`));
 
-dirPage = async (path: string):Promise<Line[]> => {
-  // console.debug(`dir path: ${path}`);
-  try {
-    const 
-    expandedPath     = `${jsdocDir}/${path}`,
-    dirLines: Line[] = [],
-    docLines: Line[] = await docPage(`${path}/jsdoc.json`);
+// let servingFromCache = false;
+
+// const
+// jsdocDir  = Deno.env.get('JSDOC_DIR'),                     // './jsdoc'
+// certFile  = Deno.env.get('TLS_CERT'),                      // './cert.pem'
+// keyFile   = Deno.env.get('TLS_CERT_KEY'),                  // './key.pem'
+// cacheSize = parseInt(Deno.env.get('CACHE_SIZE') || '100'), // in-memory cache for gemtext content
+// cache     = cacheSize > 0 ? new Cache(cacheSize) : null, // cache size is set to 10_000 bytes if cacheSize<1, but doc-server won't use the cache if this is the case
+// hostname  = '0.0.0.0', // reachable from all network interfaces
+// _         = new LineText(''),
+
+// dirPage = async (path: string):Promise<Line[]> => {
+//   // console.debug(`dir path: ${path}`);
+//   try {
+//     const 
+//     expandedPath     = `${jsdocDir}/${path}`,
+//     dirLines: Line[] = [],
+//     docLines: Line[] = await docPage(`${path}/jsdoc.json`);
   
-    // list the subdirectories
-    for await (const dirEntry of Deno.readDir(expandedPath)) {
-      // // console.debug(`dir: ${dirEntry.name}`);
-      if (!dirEntry.isDirectory) continue;
-      dirLines.push(new LineLink(`/${path}/${dirEntry.name}`.replace('//','/'), dirEntry.name));
-    }
+//     // list the subdirectories
+//     for await (const dirEntry of Deno.readDir(expandedPath)) {
+//       // // console.debug(`dir: ${dirEntry.name}`);
+//       if (!dirEntry.isDirectory) continue;
+//       dirLines.push(new LineLink(`/${path}/${dirEntry.name}`.replace('//','/'), dirEntry.name));
+//     }
 
-    if (dirLines.length > 0) {
-      dirLines.unshift(_);
-      dirLines.push(_);
-    }
+//     if (dirLines.length > 0) {
+//       dirLines.unshift(_);
+//       dirLines.push(_);
+//     }
 
-    if (docLines.length > 0) {
-      // dirLines.push(new LineHeading(`JSdoc`,2));
-      for (const docLine of docLines) {
-        dirLines.push(docLine);
-      }
-    }
+//     if (docLines.length > 0) {
+//       // dirLines.push(new LineHeading(`JSdoc`,2));
+//       for (const docLine of docLines) {
+//         dirLines.push(docLine);
+//       }
+//     }
 
-    return dirLines;
-  } catch (_error) {
-    // dirLines.push(new LineHeading('Error'));
-    // return [new LineText(`${error}`)];
-    return [new LineText('Not found.')];
-  }
-},
+//     return dirLines;
+//   } catch (_error) {
+//     // dirLines.push(new LineHeading('Error'));
+//     // return [new LineText(`${error}`)];
+//     return [new LineText('Not found.')];
+//   }
+// },
 
-getJsdocLines = (jsdoc: JsDoc):Line[] =>{
-  const lines: Line[] = [];
-  if(jsdoc.doc) [
-    new LineText(jsdoc.doc.trim()), _,
-  ];
-  for (const tag of (jsdoc.tags as Tag[])) {
-    switch (tag.kind) {
-      case 'unsupported':
-        lines.push(new LineText(`🏷  ${tag.value}`));
-        lines.push(_);
-        break;
+// getJsdocLines = (jsdoc: JsDoc):Line[] =>{
+//   const lines: Line[] = [];
+//   if(jsdoc.doc) [
+//     new LineText(jsdoc.doc.trim()), _,
+//   ];
+//   for (const tag of (jsdoc.tags as Tag[])) {
+//     switch (tag.kind) {
+//       case 'unsupported':
+//         lines.push(new LineText(`🏷  ${tag.value}`));
+//         lines.push(_);
+//         break;
 
-      case 'param':
-        lines.push(new LineText(`🏷  @${tag.kind}`));
-        lines.push(new LineText(`  {${tag.type}}`));
-        lines.push(new LineText(`  🆔 ${tag.name}`));
-        lines.push(new LineText(`  💬 ${tag.doc}`));
-        lines.push(_);
-        break;
+//       case 'param':
+//         lines.push(new LineText(`🏷  @${tag.kind}`));
+//         lines.push(new LineText(`  {${tag.type}}`));
+//         lines.push(new LineText(`  🆔 ${tag.name}`));
+//         lines.push(new LineText(`  💬 ${tag.doc}`));
+//         lines.push(_);
+//         break;
 
-      case 'return':
-        lines.push(new LineText(`🏷  @${tag.kind} {${tag.type}}`));
-        lines.push(_);
-        break;
+//       case 'return':
+//         lines.push(new LineText(`🏷  @${tag.kind} {${tag.type}}`));
+//         lines.push(_);
+//         break;
 
-      case 'see':
-        try {
-          const 
-          re    = /\s*\{@link\s+(?<url>[^\s|]+)(?<text>(|.*)?)\}\s*/,
-          match = tag.doc.match(re);
+//       case 'see':
+//         try {
+//           const 
+//           re    = /\s*\{@link\s+(?<url>[^\s|]+)(?<text>(|.*)?)\}\s*/,
+//           match = tag.doc.match(re);
 
-          if (match) {
-            const 
-            url = new URL((match.groups as {url:string}).url),
-            text = match.groups?.text.substring(1);
+//           if (match) {
+//             const 
+//             url = new URL((match.groups as {url:string}).url),
+//             text = match.groups?.text.substring(1);
 
-            lines.push(new LineText(`🏷  @${tag.kind}`));
-            if (text) {
-              lines.push(new LineLink(`${url}`, `${text}`));
-            } else {
-              lines.push(new LineLink(`${url}`, `${url}`));
-            }
-          }
-          lines.push(_);
-        } catch (error) {
-          console.error(`🏷  @see tag error: ${error}`);
-        }
-        break;
+//             lines.push(new LineText(`🏷  @${tag.kind}`));
+//             if (text) {
+//               lines.push(new LineLink(`${url}`, `${text}`));
+//             } else {
+//               lines.push(new LineLink(`${url}`, `${url}`));
+//             }
+//           }
+//           lines.push(_);
+//         } catch (error) {
+//           console.error(`🏷  @see tag error: ${error}`);
+//         }
+//         break;
 
-      default:
-        lines.push(new LineText(`🏷  @${tag.kind} ${tag.doc}`));
-        lines.push(_);
-        break;
-    }
-  }
-  lines.push(_);
-  return lines;
-},
+//       default:
+//         lines.push(new LineText(`🏷  @${tag.kind} ${tag.doc}`));
+//         lines.push(_);
+//         break;
+//     }
+//   }
+//   lines.push(_);
+//   return lines;
+// },
 
-getFileInfo = async (path: string): Promise<Deno.FileInfo> => {
-  const 
-  expandedPath = `${jsdocDir}/${path}`,
-  fileInfo     = await Deno.stat(expandedPath);
+// getFileInfo = async (path: string): Promise<Deno.FileInfo> => {
+//   const 
+//   expandedPath = `${jsdocDir}/${path}`,
+//   fileInfo     = await Deno.stat(expandedPath);
 
-  return fileInfo;
-},
+//   return fileInfo;
+// },
 
-docPage = async (path: string):Promise<Line[]> => {
-  // console.debug(`doc path: ${path}`);
-  try {
-    const 
-    expandedPath  = `${jsdocDir}/${path}`,
-    json          = await Deno.readTextFile(expandedPath),
-    sorter        = (a:Definition | MethodDef,b:Definition | MethodDef)=>{return a.name < b.name ? -1 : (a.name === b.name ? 0 : 1);},
-    jsdoc         = (JSON.parse(json) as Array<Definition>).sort(sorter),
-    lines: Line[] = [_];
+// docPage = async (path: string):Promise<Line[]> => {
+//   // console.debug(`doc path: ${path}`);
+//   try {
+//     const 
+//     expandedPath  = `${jsdocDir}/${path}`,
+//     json          = await Deno.readTextFile(expandedPath),
+//     sorter        = (a:Definition | MethodDef,b:Definition | MethodDef)=>{return a.name < b.name ? -1 : (a.name === b.name ? 0 : 1);},
+//     jsdoc         = (JSON.parse(json) as Array<Definition>).sort(sorter),
+//     lines: Line[] = [_];
 
-    for (const def of jsdoc) {
-      // console.debug(`\nDefinition(name: ${def.name}, kind: ${def.kind})`);
-      if (def.kind === 'class' && def.declarationKind === 'export') {
-        // header
-        let classHeader = `${def.kind} ${def.name}`;
-        if (def.classDef.extends) {
-          classHeader += ` extends ${def.classDef.extends}`;
-        }
-        if ((def.classDef.implements as string[]).length>0) {
-          classHeader += ` implements ${(def.classDef.implements as string[]).join(', ')}`;
-        }
-        lines.push(new LineHeading(classHeader, 2));
-        lines.push(_);
+//     for (const def of jsdoc) {
+//       // console.debug(`\nDefinition(name: ${def.name}, kind: ${def.kind})`);
+//       if (def.kind === 'class' && def.declarationKind === 'export') {
+//         // header
+//         let classHeader = `${def.kind} ${def.name}`;
+//         if (def.classDef.extends) {
+//           classHeader += ` extends ${def.classDef.extends}`;
+//         }
+//         if ((def.classDef.implements as string[]).length>0) {
+//           classHeader += ` implements ${(def.classDef.implements as string[]).join(', ')}`;
+//         }
+//         lines.push(new LineHeading(classHeader, 2));
+//         lines.push(_);
 
-        // constructor
-        for (const constr of (def.classDef.constructors as Constructor[])) {
-          // console.debug(`constructor`);
-          if (constr.jsDoc) {
-            // header
-            const 
-            paramNames: string = (constr.params as Param[]).map(p => p.name).join(', '),
-            constrHeader: string = `constructor(${paramNames})`;
+//         // constructor
+//         for (const constr of (def.classDef.constructors as Constructor[])) {
+//           // console.debug(`constructor`);
+//           if (constr.jsDoc) {
+//             // header
+//             const 
+//             paramNames: string = (constr.params as Param[]).map(p => p.name).join(', '),
+//             constrHeader: string = `constructor(${paramNames})`;
 
-            lines.push(new LineHeading(constrHeader, 3)); lines.push(_);
+//             lines.push(new LineHeading(constrHeader, 3)); lines.push(_);
 
-            if (constr.jsDoc) {
-              const jsdocLines = getJsdocLines(constr.jsDoc);
+//             if (constr.jsDoc) {
+//               const jsdocLines = getJsdocLines(constr.jsDoc);
 
-              for (const line of jsdocLines) lines.push(line);
-              lines.push(_);
-            }
-          }
-        }
-        // lines.push(_);
+//               for (const line of jsdocLines) lines.push(line);
+//               lines.push(_);
+//             }
+//           }
+//         }
+//         // lines.push(_);
 
-        // methods
-        for (const method of (def.classDef.methods as MethodDef[]).sort(sorter)) {
-          // console.debug(`method: ${method.name}`);
-          // header
-          const 
-          staticMarker = method.isStatic ? 'static ' : '',
-          asyncMarker = method.functionDef.isAsync ? 'async ' : '',
-          paramNames: string = (method.functionDef.params as Param[]).map(p => p.name).join(', '),
-          methodHeader: string = method.kind === 'getter' ? `getter ${method.name}` : `${staticMarker}${asyncMarker}${method.name}(${paramNames})`;
+//         // methods
+//         for (const method of (def.classDef.methods as MethodDef[]).sort(sorter)) {
+//           // console.debug(`method: ${method.name}`);
+//           // header
+//           const 
+//           staticMarker = method.isStatic ? 'static ' : '',
+//           asyncMarker = method.functionDef.isAsync ? 'async ' : '',
+//           paramNames: string = (method.functionDef.params as Param[]).map(p => p.name).join(', '),
+//           methodHeader: string = method.kind === 'getter' ? `getter ${method.name}` : `${staticMarker}${asyncMarker}${method.name}(${paramNames})`;
 
-          // console.debug(`method header: ${methodHeader}`);
-          lines.push(new LineHeading(methodHeader, 3)); lines.push(_);
+//           // console.debug(`method header: ${methodHeader}`);
+//           lines.push(new LineHeading(methodHeader, 3)); lines.push(_);
 
-          if (method.jsDoc) {
-            // console.debug(`  reading jsdoc`);
-            const jsdocLines = getJsdocLines(method.jsDoc);
+//           if (method.jsDoc) {
+//             // console.debug(`  reading jsdoc`);
+//             const jsdocLines = getJsdocLines(method.jsDoc);
 
-            for (const line of jsdocLines) lines.push(line);
-            lines.push(_);
-          }
-        }
-        lines.push(_);
-      }
-    }
+//             for (const line of jsdocLines) lines.push(line);
+//             lines.push(_);
+//           }
+//         }
+//         lines.push(_);
+//       }
+//     }
 
-    lines.push(_);
-    return lines;
-  } catch (_error) {
-    // console.error(`🔴 doc error: ${error}`);
-    return <Line[]>[];
-    // lines.push(new LineHeading('Error'));
-    // lines.push(new LineText(`${error}`));
-  }
-},
+//     lines.push(_);
+//     return lines;
+//   } catch (_error) {
+//     // console.error(`🔴 doc error: ${error}`);
+//     return <Line[]>[];
+//     // lines.push(new LineHeading('Error'));
+//     // lines.push(new LineText(`${error}`));
+//   }
+// },
 
-mainRoute = new Route('/', async (ctx) => {
-  // // console.debug('main route');
-  try {
-    const path = '/';
+// mainRoute = new Route('/', async (ctx) => {
+//   // // console.debug('main route');
+//   try {
+//     const path = '/';
 
-    // prefer returning gemtext from cache
-    if (cacheSize > 0) {
-      const cached = cache?.get(path);
+//     // prefer returning gemtext from cache
+//     if (cacheSize > 0) {
+//       const cached = cache?.get(path);
 
-      if (cached ) {
-        const fileInfo = await getFileInfo('');
-        let jsdocInfo: Deno.FileInfo | undefined;
-        try {
-          jsdocInfo = await getFileInfo('jsdoc.json');
-        } catch (_error) {
-          // console.debug('root dir has no jsdoc.json');
-        }
-        if (
-          fileInfo.mtime && !(cached.timestamp < fileInfo.mtime) &&
-          (!jsdocInfo || (jsdocInfo.mtime && !(cached.timestamp < jsdocInfo.mtime)) )
-        ) {
-          // console.debug(`Serving from cache: '${path}'`);
-          servingFromCache = true;
-          ctx.response.body = cached.bytes;
-          return;
-        }
-      }
-    }
+//       if (cached ) {
+//         const fileInfo = await getFileInfo('');
+//         let jsdocInfo: Deno.FileInfo | undefined;
+//         try {
+//           jsdocInfo = await getFileInfo('jsdoc.json');
+//         } catch (_error) {
+//           // console.debug('root dir has no jsdoc.json');
+//         }
+//         if (
+//           fileInfo.mtime && !(cached.timestamp < fileInfo.mtime) &&
+//           (!jsdocInfo || (jsdocInfo.mtime && !(cached.timestamp < jsdocInfo.mtime)) )
+//         ) {
+//           // console.debug(`Serving from cache: '${path}'`);
+//           servingFromCache = true;
+//           ctx.response.body = cached.bytes;
+//           return;
+//         }
+//       }
+//     }
 
-    // generate gemtext from scratch
-    const 
-    lines = await dirPage(''),
-    gemtext = new Gemtext(
-      new LineHeading('Qworum JSDoc Server', 1), _,
-      ...lines,
-    );
-    cache?.set(path, gemtext);
-    ctx.response.body = gemtext;
+//     // generate gemtext from scratch
+//     const 
+//     lines = await dirPage(''),
+//     gemtext = new Gemtext(
+//       new LineHeading('Qworum JSDoc Server', 1), _,
+//       ...lines,
+//     );
+//     cache?.set(path, gemtext);
+//     ctx.response.body = gemtext;
 
-  } catch (_error) {
-    ctx.response.body =
-    new Gemtext(
-      // new LineHeading('Error'), _,
-      // new LineText(`${error}`)
-      new LineHeading('Error', 1), _,
-      // new LineText(`${error}`)
-      new LineText('Not found.')
-    );
-  }
-}),
+//   } catch (_error) {
+//     ctx.response.body =
+//     new Gemtext(
+//       // new LineHeading('Error'), _,
+//       // new LineText(`${error}`)
+//       new LineHeading('Error', 1), _,
+//       // new LineText(`${error}`)
+//       new LineText('Not found.')
+//     );
+//   }
+// }),
 
-// Kaksik BUG/feature: at most one "parameterized route" is allowed !
-// Kaksik BUG/feature: `:path` does not match strings that contain "/" !
-dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
-  // // console.debug('dir route');
-  try {
-    const path: string = (ctx.pathParams as {path: string}).path;
-    // console.debug(`dir route path: '${path}'`);
+// // Kaksik BUG/feature: at most one "parameterized route" is allowed !
+// // Kaksik BUG/feature: `:path` does not match strings that contain "/" !
+// dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
+//   // // console.debug('dir route');
+//   try {
+//     const path: string = (ctx.pathParams as {path: string}).path;
+//     // console.debug(`dir route path: '${path}'`);
 
-    // prefer returning gemtext from cache
-    if (cacheSize > 0) {
-      const cached = cache?.get(path);
-      if (cached ) {
-        const fileInfo = await getFileInfo(`${path}/jsdoc.json`);
-        if (fileInfo.mtime && !(cached.timestamp < fileInfo.mtime)) {
-          // console.debug(`Serving from  cache: '${path}'`);
-          servingFromCache = true;
-          ctx.response.body = cached.bytes;
-          return;
-        }
-      }
-    }
+//     // prefer returning gemtext from cache
+//     if (cacheSize > 0) {
+//       const cached = cache?.get(path);
+//       if (cached ) {
+//         const fileInfo = await getFileInfo(`${path}/jsdoc.json`);
+//         if (fileInfo.mtime && !(cached.timestamp < fileInfo.mtime)) {
+//           // console.debug(`Serving from  cache: '${path}'`);
+//           servingFromCache = true;
+//           ctx.response.body = cached.bytes;
+//           return;
+//         }
+//       }
+//     }
 
-    // generate gemtext from scratch
-    const 
-    lines = await dirPage(path),
-    gemtext = new Gemtext(
-      new LineHeading(`${path}`, 1), _,
-      ...lines,
-    );
-    cache?.set(path, gemtext);
-    ctx.response.body = gemtext;
-  } catch (_error) {
-    ctx.response.body =
-    new Gemtext(
-      new LineHeading('Error', 1), _,
-      // new LineText(`${error}`)
-      new LineText('Not found.')
-    );
-  }
-}),
+//     // generate gemtext from scratch
+//     const 
+//     lines = await dirPage(path),
+//     gemtext = new Gemtext(
+//       new LineHeading(`${path}`, 1), _,
+//       ...lines,
+//     );
+//     cache?.set(path, gemtext);
+//     ctx.response.body = gemtext;
+//   } catch (_error) {
+//     ctx.response.body =
+//     new Gemtext(
+//       new LineHeading('Error', 1), _,
+//       // new LineText(`${error}`)
+//       new LineText('Not found.')
+//     );
+//   }
+// }),
 
-run = async (): Promise<void> => {
-  while(true) try {
-    const app = new Application({ keyFile, certFile, hostname });
+// run = async (): Promise<void> => {
+//   while(true) try {
+//     const app = new Application({ keyFile, certFile, hostname });
 
-    app.use(async (ctx, next) => {
-      servingFromCache = false;
+//     app.use(async (ctx, next) => {
+//       servingFromCache = false;
 
-      const ingressDate = new Date();
+//       const ingressDate = new Date();
       
-      // console.time(logLine);
-      await next();
-      // console.debug(ctx.response);
+//       // console.time(logLine);
+//       await next();
+//       // console.debug(ctx.response);
       
-      const 
-      egressDate = new Date(),
-      latencyInMilliseconds = egressDate.getTime() - ingressDate.getTime(),
-      latencyTag = ` • ${latencyInMilliseconds} ms`,
-      cacheTag = servingFromCache ? ' • from cache' : '',
-      logLine = `[${ingressDate.toISOString()}] ${ctx.request.path}${latencyTag}${cacheTag}`;
+//       const 
+//       egressDate = new Date(),
+//       latencyInMilliseconds = egressDate.getTime() - ingressDate.getTime(),
+//       latencyTag = ` • ${latencyInMilliseconds} ms`,
+//       cacheTag = servingFromCache ? ' • from cache' : '',
+//       logLine = `[${ingressDate.toISOString()}] ${ctx.request.path}${latencyTag}${cacheTag}`;
 
-      console.info(logLine);
-    });
+//       console.info(logLine);
+//     });
 
-    app.use(handleRedirects(
-      // new Redirect('/', '/dir/'),
-    ));
+//     app.use(handleRedirects(
+//       // new Redirect('/', '/dir/'),
+//     ));
 
-    app.use(handleRoutes(
-      mainRoute,
-      dirRoute,
-    ));
+//     app.use(handleRoutes(
+//       mainRoute,
+//       dirRoute,
+//     ));
 
-    app.use((ctx) => {
-      ctx.response.body = new Gemtext(
-        new LineHeading('No routes matched'), 
-      );
-    });
-    await app.start();
-  } catch (error) {
-    console.error('Restarting the server after this error: ', error);
-  }
-};
+//     app.use((ctx) => {
+//       ctx.response.body = new Gemtext(
+//         new LineHeading('No routes matched'), 
+//       );
+//     });
+//     await app.start();
+//   } catch (error) {
+//     console.error('Restarting the server after this error: ', error);
+//   }
+// };
 
-await run();
+// await run();
+const
+jsdocDir:  string | undefined = Deno.env.get('JSDOC_DIR')    || undefined,
+certFile:  string | undefined = Deno.env.get('TLS_CERT')     || undefined,
+keyFile:   string | undefined = Deno.env.get('TLS_CERT_KEY') || undefined,
+hostname:  string | undefined = Deno.env.get('HOSTNAME')     || undefined,
+cacheSize: number | undefined = Deno.env.get('CACHE_SIZE') ? parseInt(Deno.env.get('CACHE_SIZE') || '-1') : undefined,
+port:      number | undefined = Deno.env.get('PORT')       ? parseInt(Deno.env.get('PORT') || '-1') : undefined,
+config: ServerConfig = {};
+
+if (jsdocDir) config.jsdocDir = jsdocDir;
+if (certFile) config.certFile = certFile;
+if (keyFile) config.keyFile = keyFile;
+if (hostname) config.hostname = hostname;
+if (cacheSize) config.cacheSize = cacheSize;
+if (port) config.port = port;
+
+// console.debug('main config', config);
+
+const server = new Server(config);
+
+await server.run();
+
