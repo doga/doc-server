@@ -2,7 +2,8 @@
 import { 
   Application,
   Gemtext, Line, LineText, LineLink, LineHeading, // LineQuote, LineListItem, LinePreformattingToggle,
-  handleRedirects, handleRoutes, Route, // Redirect,
+  handleRedirects, handleRoutes, Route,
+  ConfigArgument, // Redirect,
 } from '../deps.mts';
 
 import type {
@@ -304,7 +305,11 @@ dirRoute = new Route<{path?: string}>('/:path', async (ctx) => {
 
 serve = async (): Promise<void> => {
   while(true) try {
-    const app = new Application({ keyFile, certFile, hostname, port });
+    const 
+    key: string = await Deno.readTextFile(keyFile),
+    cert: string = await Deno.readTextFile(certFile),
+    config: ConfigArgument = { key, cert, hostname, port },
+    app = new Application(config);
 
     app.use(async (ctx, next) => {
       servingFromCache = false;

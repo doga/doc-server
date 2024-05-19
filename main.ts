@@ -19,6 +19,7 @@ if (cacheSize) config.cacheSize = cacheSize;
 if (port) config.port = port;
 
 // console.debug('main config', config);
+// console.debug('using https://deno.land/x/qgeminiserver@1.3.2');
 
 const server = new Server(config);
 
